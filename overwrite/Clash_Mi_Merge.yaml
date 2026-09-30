@@ -1,0 +1,254 @@
+# Clash Mi 统一覆写（Mac / Windows / 手机共用）
+# 远程地址：https://raw.githubusercontent.com/mrc991/lc-network-rules/main/overwrite/Clash_Mi_Merge.yaml
+# 配套订阅模板：clash/Custom_Clash.ini（GEOIP,cn 必须带 no-resolve）
+
+# 0. 强制 QUIC 回退 TCP；广告拦截（与 Shadowrocket 同源 Johnshall 列表）
+# 广告规则以 rule-provider 加载，不展开进订阅；直接 REJECT，不依赖订阅里的任何分组
+# 误拦时：删掉下面两条 RULE-SET 或在该行前加 # 即可关闭
+prepend-rules:
+  - "AND,((NETWORK,udp),(DST-PORT,443)),REJECT"
+  - "RULE-SET,lc-adblock-domain,REJECT"
+  - "RULE-SET,lc-adblock-ip,REJECT,no-resolve"
+
+rule-providers:
+  lc-adblock-domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/adblock/AdBlock_Domain.yaml
+    path: ./ruleset/lc_adblock_domain.yaml
+    interval: 86400
+  lc-adblock-ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/adblock/AdBlock_IP.yaml
+    path: ./ruleset/lc_adblock_ip.yaml
+    interval: 86400
+
+# 1. 客户端与连接存活优化（各端统一关闭 IPv6，避免运营商 IPv6 DNS 旁路）
+ipv6: false
+external-ui-url: ""
+global-client-fingerprint: chrome
+keep-alive-idle: 30
+keep-alive-interval: 30
+
+# 2. 核心 DNS 劫持与解析优化 (redir-host -> fake-ip)
+dns:
+  enable: true
+  prefer-h3: false
+  ipv6: false
+  ipv6-timeout: 300
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  cache-algorithm: arc
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - https://223.5.5.5/dns-query
+    - https://1.12.12.12/dns-query
+  # 不设 fallback：未命中规则的域名不在本地解析，交给节点远端解析（就近 CDN）
+  fallback: []
+  respect-rules: false
+  # 覆盖订阅自带的 geolocation-!cn -> 1.1.1.1 直连 DoH（与节点远端解析冲突）
+  # 本地只解析 fake-ip-filter 与直连域名，一律用国内 DoH
+  nameserver-policy:
+    'geosite:cn':
+      - https://223.5.5.5/dns-query
+      - https://1.12.12.12/dns-query
+    'geosite:geolocation-!cn':
+      - https://223.5.5.5/dns-query
+      - https://1.12.12.12/dns-query
+  # 节点域名解析（防启动死锁）
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+# 假 IP 黑名单：强制以下域名进行真实 IP 解析（包含你的内网穿透与 NAS 域名）
+  fake-ip-filter:
+# --- 腾讯 (Tencent) 核心服务 ---
+    - '+.qpic.cn'             # 朋友圈/聊天图片
+    - '+.qlogo.cn'            # 头像
+    - '+.wechatos.net'        # 微信 CDN
+    - '+.weixin.qq.com'       # 微信 API
+    - '+.wechat.com'          # 微信海外
+    - '+.weixin.com'          # 微信通用
+    - '+.servicewechat.com'   # 小程序
+    - '+.tenpay.com'          # 微信支付
+    - '+.gtimg.cn'            # 腾讯静态资源
+    - '+.idqqimg.com'         # QQ 静态资源
+    - '+.tencent-cloud.net'   # 腾讯云调度
+    - '+.qq.com'
+    - '+.tencent.com'
+    - 'localhost.ptlogin2.qq.com'
+    - 'localhost.sec.qq.com'
+    - 'localhost.*.weixin.qq.com'
+
+    # --- 基础内网与组网工具 ---
+    - '+.tailscale.com'
+    - '+.tailscale.io'
+    - '+.ts.net'
+    - '+.heiyu.space'
+    - '+.lazycat.cloud'
+    - '+.bigrich.cc'
+    - 'localhost'
+    - 'WORKGROUP'
+    - '+.lan'
+    - '+.local'
+    - '+.localdomain'
+    - '+.home.arpa'
+    - '+.direct'
+    - '+.example'
+    - '+.invalid'
+    - '+.test'
+
+    # --- 时间同步 (NTP) ---
+    - 'time.*.com'
+    - 'time.*.gov'
+    - 'time.*.edu.cn'
+    - 'time.*.apple.com'
+    - 'time-ios.apple.com'
+    - 'time[1-7].*.com'
+    - 'ntp.*.com'
+    - 'ntp[1-7].*.com'
+    - '+.time.edu.cn'
+    - '+.ntp.org.cn'
+    - '+.pool.ntp.org'
+    - 'time1.cloud.tencent.com'
+
+    # --- 音乐服务 (Music) ---
+    - '+.music.163.com'       # 网易云音乐
+    - 'music.163.com'
+    - '+.126.net'
+    - '+.y.qq.com'            # QQ 音乐
+    - 'y.qq.com'
+    - 'streamoc.music.tc.qq.com'
+    - 'mobileoc.music.tc.qq.com'
+    - 'isure.stream.qqmusic.qq.com'
+    - 'dl.stream.qqmusic.qq.com'
+    - 'aqqmusic.tc.qq.com'
+    - 'amobile.music.tc.qq.com'
+    - '+.kuwo.cn'             # 酷我
+    - 'songsearch.kugou.com'  # 酷狗
+    - 'trackercdn.kugou.com'
+    - 'musicapi.taihe.com'    # 百度/太合
+    - 'music.taihe.com'
+    - '+.xiami.com'           # 虾米
+    - '+.music.migu.cn'       # 咪咕
+    - 'music.migu.cn'
+    - 'api.joox.com'          # JOOX
+    - 'joox.com'
+    - 'api-jooxtt.sanook.com'
+
+    # --- 游戏服务 (Games) ---
+    - '+.srv.nintendo.net'    # Nintendo
+    - '+.cdn.nintendo.net'
+    - '+.stun.playstation.net' # Sony PS
+    - 'xbox.*.*.microsoft.com' # Xbox
+    - 'xbox.*.microsoft.com'
+    - '+.xboxlive.com'
+    - 'xnotify.xboxlive.com'
+    - '+.battle.net'          # Blizzard
+    - '+.battlenet.com.cn'
+    - '+.wotgame.cn'          # Wargaming
+    - '+.wggames.cn'
+    - '+.wowsgame.cn'
+    - '+.wargaming.net'
+    - '+.square-enix.com'     # FF14
+    - '+.finalfantasyxiv.com'
+    - '+.ffxiv.com'
+    - '+.ff14.sdo.com'
+    - 'ff.dorado.sdo.com'
+    - '+.blzstatic.cn'
+
+    # --- 系统与基础服务 ---
+    - '+.services.googleapis.cn' # Google CN
+    - 'lens.l.google.com'
+    - 'stun.l.google.com'
+    - 'na.b.g-tun.com'
+    - '+.push.apple.com'      # Apple Push
+    - 'mesu.apple.com'        # Apple Update
+    - 'swscan.apple.com'
+    - 'swquery.apple.com'
+    - 'swdownload.apple.com'
+    - 'swcdn.apple.com'
+    - 'swdist.apple.com'
+    - '+.msftncsi.com'        # Windows 联网检测
+    - '+.msftconnecttest.com'
+    - '+.market.xiaomi.com'   # 小米
+    - 'Mijia Cloud'           # 米家
+    - '+.adguard.org'
+    - 'local.adguard.org'
+
+    # --- 运营商与支付 (Mobile/Finance) ---
+    - '+.cmbchina.com'        # 招商银行
+    - '+.cmbimg.com'
+    - '+.pingan.com.cn'       # 平安
+    - '+.cmpassport.com'      # 移动认证
+    - 'id6.me'
+    - 'open.e.189.cn'         # 电信
+    - 'opencloud.wostore.cn'  # 联通
+    - 'id.mail.wo.cn'
+    - 'hmrz.wo.cn'
+    - 'nishub1.10010.com'
+    - '+.wosms.cn'
+    - '+.jegotrip.com.cn'     # 无忧行
+
+    # --- 视频与下载 (Video/Download) ---
+    - '+.nflxvideo.net'       # Netflix CDN
+    - '+.media.dssott.com'    # Disney+
+    - '+.sandai.net'          # 迅雷
+    - '+.n0808.com'
+    - '+.uu.163.com'          # UU 加速器
+    - 'ps.res.netease.com'
+
+    # --- 网络协议与杂项 ---
+    - 'stun.*.*'
+    - 'stun.*.*.*'
+    - '+.stun.*.*'
+    - '+.pub.3gppnetwork.org' # Wifi Calling
+    - 'proxy.golang.org'
+    - 'router.asus.com'       # 路由器管理
+    - '+.linksys.com'
+    - '+.linksyssmartwifi.com'
+    - 'PDC._msDCS.*.*'        # AD 域服务
+    - 'DC._msDCS.*.*'
+    - 'GC._msDCS.*.*'
+    - 'network-test.debian.org'
+    - 'detectportal.firefox.com'
+
+    # --- GEOSITE 预设 (需要内核支持) ---
+    - 'geosite:category-games'
+    - 'geosite:apple-cn'
+    #- 'geosite:google-cn'
+
+# 3. 虚拟网卡网段对齐 (匹配 Fake-IP 范围)
+tun:
+  enable: true
+  stack: system
+  inet4-address:
+    - 172.19.0.1/30
+  dns-hijack:
+    - "any:53"
+  strict-route: false       # 放行系统直连与局域网流量，避免断网与握手卡死
+  auto-detect-interface: true
+  disable-icmp-forwarding: false
+  auto-route: true # 配合界面里的 ICMP 转发与基础接管
+  mtu: 1420
+
+
+# 4. 开启流量嗅探 (解决某些软件不发起 DNS 请求导致无法分流的问题)
+sniffer:
+  enable: true
+  override-destination: true
+  force-dns-mapping: true
+  parse-pure-ip: true
+  sniff:
+    TLS:
+      ports: [443, 8443]
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    QUIC:
+      ports: [443]

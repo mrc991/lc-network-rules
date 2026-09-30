@@ -1,0 +1,103 @@
+name: Build rules
+
+on:
+  schedule:
+    # 每天北京时间 04:00（UTC 20:00）
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "custom/**"
+      - "overwrite/Clash_Mi_Merge.yaml"
+      - "overwrite/LC_AdBlock.conf"
+      - "scripts/**"
+      - ".github/workflows/build.yml"
+  pull_request:
+    paths:
+      - "custom/**"
+      - "overwrite/**"
+      - "scripts/**"
+      - ".github/workflows/build.yml"
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: build-rules
+  cancel-in-progress: false
+
+env:
+  SUBCONVERTER_URL: https://github.com/tindy2013/subconverter/releases/download/v0.9.0/subconverter_linux64.tar.gz
+  SUBCONVERTER_SHA256: 884a6d1168267eba076fcdd5171215bacf98c17948ab526e4cbbdcad5f7a0217
+  MIHOMO_URL: https://github.com/MetaCubeX/mihomo/releases/download/v1.19.31/mihomo-linux-amd64-v1.19.31.gz
+  MIHOMO_SHA256: d5e74bbddbdfff49a1aef7775bf5911da59f0d7196ed509a0ac914b3653dd5f1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet pyyaml==6.0.2
+
+      - name: Build from upstream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/build.py
+
+      - name: Invariant tests
+        run: python scripts/tests.py
+
+      - name: Check referenced rule URLs
+        run: python scripts/check_urls.py
+
+      - name: End-to-end (subconverter + Clash Mi overwrite + mihomo -t)
+        run: |
+          BIN=$(mktemp -d)
+          curl -fsSL -o "$BIN/sc.tgz" "$SUBCONVERTER_URL"
+          echo "$SUBCONVERTER_SHA256  $BIN/sc.tgz" | sha256sum -c -
+          tar -xzf "$BIN/sc.tgz" -C "$BIN"
+          curl -fsSL -o "$BIN/mihomo.gz" "$MIHOMO_URL"
+          echo "$MIHOMO_SHA256  $BIN/mihomo.gz" | sha256sum -c -
+          gunzip "$BIN/mihomo.gz" && chmod +x "$BIN/mihomo"
+          SUBCONVERTER="$BIN/subconverter/subconverter" MIHOMO="$BIN/mihomo" bash scripts/e2e_clash.sh
+
+      - name: Commit outputs
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          OUTPUTS="clash shadowrocket overwrite/adblock"
+          if git diff --quiet -- $OUTPUTS && [ -z "$(git ls-files --others --exclude-standard -- $OUTPUTS)" ]; then
+            echo "No output changes."
+            exit 0
+          fi
+          CHANGED=$( { git diff --name-only -- $OUTPUTS; git ls-files --others --exclude-standard -- $OUTPUTS; } | sort -u)
+          git add $OUTPUTS upstream.lock
+          git commit -m "chore: rebuild rules from upstream [skip ci]"
+          git push
+          # 刷新 jsDelivr 缓存（失败不影响发布）
+          for f in $CHANGED; do
+            curl -fsS "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/$f" > /dev/null || echo "purge $f failed (non-fatal)"
+          done
+
+      - name: Report failure
+        if: failure() && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUN="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          TITLE="Build failed: upstream change needs attention"
+          NUM=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number -q '.[0].number')
+          if [ -n "$NUM" ]; then
+            gh issue comment "$NUM" --body "Failed again: $RUN"
+          else
+            gh issue create --title "$TITLE" --body "构建或校验失败，线上产物保持上一版不变。日志：$RUN"
+          fi

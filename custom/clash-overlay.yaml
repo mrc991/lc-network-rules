@@ -1,0 +1,136 @@
+# 对上游 Aethersailor/Custom_OpenClash_Rules cfg/Custom_Clash.ini 的定制。
+# 规则：每个锚点（after/before/replace）必须在上游文件中恰好出现一次，否则构建失败，
+# 线上保持上一版不变。锚点按「去掉首尾空白后整行相等」匹配。
+
+# 输出文件头（替换上游头部注释，[custom] 之前的部分）
+header: |
+  ;LC 定制版 Custom_Clash.ini（自动生成，请勿手改；定制写在 custom/clash-overlay.yaml）
+  ;上游：https://github.com/Aethersailor/Custom_OpenClash_Rules （基于 ACL4SSR 模板魔改，感谢原作者）
+  ;本仓库：https://github.com/mrc991/lc-network-rules
+
+# URL 改写（按顺序作用于整份输出）
+rewrite:
+  # jsDelivr 主站国内易被 RST，统一走 testingcf
+  - from: "https://cdn.jsdelivr.net/gh/Aethersailor/"
+    to: "https://testingcf.jsdelivr.net/gh/Aethersailor/"
+  # 上游 clash-domain 改用 .mrs；订阅转换与 Shadowrocket 映射按 .yaml 处理，保持与原 fork 一致
+  - regex: "_Domain\\.mrs,"
+    to: "_Domain.yaml,"
+
+# 替换上游全部 custom_proxy_group 行
+proxy_groups: custom/proxy_groups.ini
+# 上游有、我们有意不用的分组（已被 ops 替换掉引用），不再提示
+ignore_upstream_groups:
+  - "🍎 苹果服务"
+  - "Ⓜ️ 微软服务"
+
+ops:
+  - after: "ruleset=🎯 全球直连,[]GEOIP,private,no-resolve"
+    lines: |
+      ; Tailscale 控制面走优选（须在 Custom_Direct_Domain 之前）
+      ruleset=🀄️ 优选地址,[]DOMAIN-SUFFIX,tailscale.com
+      ruleset=🀄️ 优选地址,[]DOMAIN-SUFFIX,tailscale.io
+      ; TV Box（客厅 Shield 电影天堂，默认真连，可切代理）
+      ruleset=🎥 TV Box,[]DOMAIN-SUFFIX,jimxtc.com
+      ruleset=🎥 TV Box,[]DOMAIN-SUFFIX,cqkpx.com
+      ruleset=🎥 TV Box,[]DOMAIN-SUFFIX,dytt-tvs.com
+      ruleset=🎥 TV Box,[]DOMAIN-SUFFIX,dytt-tupian.com
+      ruleset=🎥 TV Box,[]DOMAIN-SUFFIX,dyttzyapi.com
+      ; 自建 DERP 直连（须在非标端口之前）
+      ruleset=🎯 全球直连,[]IP-CIDR,45.62.118.67/32,no-resolve
+      ruleset=🎯 全球直连,[]IP-CIDR,192.210.136.225/32,no-resolve
+      ; jsDelivr：cdn.jsdelivr.net 国内直连常被 RST，须在 Custom_Direct_Domain 之前走代理
+      ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,jsdelivr.net
+      ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,jsdelivr.com
+
+  - replace: ";谷歌在国内可用的域名直连"
+    lines: |
+      ;谷歌在国内可用的域名直连,但会影响 YouTube 的访问，所以改成谷歌服务,走代理
+  - replace: "ruleset=🎯 全球直连,[]GEOSITE,google-cn"
+    lines: |
+      ruleset=🇬 谷歌服务,[]GEOSITE,google-cn
+
+  - after: "ruleset=🎯 全球直连,[]GEOSITE,category-public-tracker"
+    lines: |
+      ;微信与腾讯国内服务（保证微信小程序、公众号、图片视频加载及微信支付直连，置于即时通讯前防误入海外）
+      ruleset=🎯 全球直连,[]GEOSITE,Tencent
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,servicewechat.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,weixin.qq.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,wechat.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,weixin.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,qpic.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,qlogo.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,tenpay.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,tencent-cloud.net
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,tdnsv6.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,tdnsvod1.cn
+
+  - replace: "ruleset=🍎 苹果服务,[]GEOSITE,apple"
+    lines: |
+      ; 美区 App Store：走美国节点。须在苹果中国之前，避免被直连/17.0.0.0/8 吃掉。AppleTV+ 的 itunes 主机已在上一行命中。
+      ruleset=🍎 App Store,[]DOMAIN-SUFFIX,apps.apple.com
+      ruleset=🍎 App Store,[]DOMAIN-SUFFIX,itunes.apple.com
+      ruleset=🍎 App Store,[]DOMAIN-SUFFIX,appsto.re
+      ruleset=🍎 App Store,[]DOMAIN-SUFFIX,mzstatic.com
+      ruleset=🍎 苹果中国,[]GEOSITE,apple-cn
+      ruleset=🍎 苹果中国,[]DOMAIN-SUFFIX,icloud.com
+      ruleset=🍎 苹果中国,[]DOMAIN-SUFFIX,icloud-content.com
+      ruleset=🍎 苹果中国,[]DOMAIN-SUFFIX,cdn-apple.com
+      ruleset=🍎 苹果中国,[]DOMAIN-SUFFIX,icloud.com.cn
+      ruleset=🍎 苹果中国,[]DOMAIN-SUFFIX,apple.com.cn
+
+  - replace: "ruleset=Ⓜ️ 微软服务,[]GEOSITE,microsoft"
+    lines: |
+      ruleset=Ⓜ️ 微软中国,[]GEOSITE,microsoft@cn
+      ;文件传输
+      ruleset=📁 文件传输,[]DOMAIN-KEYWORD,filen
+      ruleset=📁 文件传输,[]DOMAIN-SUFFIX,drive.google.com
+      ruleset=📁 文件传输,[]DOMAIN-SUFFIX,googledrive.com
+      ruleset=📁 文件传输,[]DOMAIN-SUFFIX,docs.google.com
+      ruleset=📁 文件传输,[]DOMAIN-KEYWORD,googledrive
+      ;自定义加入规则
+      ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,bigrich.cc
+      ; Synology / QuickConnect：上游 Custom_Direct 用 DOMAIN,*synology* 是精确匹配，不会命中真实主机名
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,synology.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,synology.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,quickconnect.to
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,quickconnect.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,heiyu.space
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,lazycat.cloud
+      ruleset=🎯 全球直连,[]DOMAIN-KEYWORD,blueair
+      ruleset=🇭🇰 香港节点,[]DOMAIN-KEYWORD,qzymetc
+      ruleset=📈 Crypto,[]GEOSITE,category-cryptocurrency
+      ruleset=🎯 全球直连,[]IP-CIDR,47.246.0.0/16,no-resolve
+      ruleset=🎯 全球直连,[]IP-CIDR,47.251.0.0/16,no-resolve
+      ruleset=🎯 全球直连,[]IP-CIDR,47.88.0.0/17,no-resolve
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,taobao.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,tmall.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,alicdn.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,alibabadns.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,tbcache.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,umeng.com
+      ; 云闪付 / 银联：必须直连，避免 DNS 海外视图后走漏网之鱼
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,unionpay.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,unionpay.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,unionpay.net
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,unionpaysecure.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,unionpayintl.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,unionpayintl.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,95516.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,95516.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,95516.net
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,chinaums.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,chinapay.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,chinapay.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,chinaunionpay.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,chinaunionpay.com.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,chinaunionpay.net
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,cup.com.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,cup62.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,cloudpay.com.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,airepay.net
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,chinapayhongkong.com
+
+  - replace: ";由于 OpenClash 使用的大陆白名单收录不全，此处留有 geoip:cn 作为国内 IP 兜底"
+    lines: |
+      ;由于 OpenClash 使用的大陆白名单收录不全，此处留有 geoip:cn 作为国内 IP 兜底（必须 no-resolve：否则未命中域名会在本地真实解析，造成 DNS 泄漏）
