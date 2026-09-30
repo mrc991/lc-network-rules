@@ -39,6 +39,8 @@ for _ in $(seq 1 30); do curl -fs "http://127.0.0.1:$HTTP_PORT/nodes.yaml" >/dev
 # 3) 起 subconverter：复制到临时目录，只监听本机；放开 ruleset 数量限制
 #    默认 max_allowed_rulesets=64，本模板约 150 条，超限会静默回落到内置模板（生产后端同样需要放开）
 cp -R "$(dirname "$SUBCONVERTER")" "$WORK/sc"
+# 发布包只带 pref.example.toml，pref.toml 首次运行才生成
+[ -f "$WORK/sc/pref.toml" ] || cp "$WORK/sc/pref.example.toml" "$WORK/sc/pref.toml"
 "$PY" - "$WORK/sc/pref.toml" <<'EOF'
 import re, sys
 p = sys.argv[1]; s = open(p, encoding="utf-8").read()
