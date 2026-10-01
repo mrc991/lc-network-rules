@@ -22,11 +22,11 @@ prepend-rules:
   - "DOMAIN,BigRichNAS,DIRECT"
   - "DOMAIN-SUFFIX,BigRichNAS.local,DIRECT"
   - "IP-CIDR,192.168.8.8/32,DIRECT,no-resolve"
-  # AnyDesk：强制直连（避免远程连接通过代理导致延迟与断连）
-  - "PROCESS-NAME,AnyDesk,DIRECT"
-  - "PROCESS-NAME,AnyDesk.exe,DIRECT"
+  # AnyDesk：仅按域名直连（含中国区，不依赖进程识别）
   - "DOMAIN-SUFFIX,anydesk.com,DIRECT"
   - "DOMAIN-SUFFIX,net.anydesk.com,DIRECT"
+  - "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT"
+  - "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"
   - "RULE-SET,lc-adblock-domain,REJECT"
   - "RULE-SET,lc-adblock-ip,REJECT,no-resolve"
 
@@ -123,6 +123,8 @@ dns:
     # AnyDesk（必须真实 IP，避免 Fake-IP 导致连接失败）
     - '+.anydesk.com'
     - '+.net.anydesk.com'
+    - '+.anydesk.com.cn'
+    - '+.net.anydesk.com.cn'
     - 'localhost'
     - 'WORKGROUP'
     - '+.lan'

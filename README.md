@@ -66,3 +66,5 @@ python scripts/build.py && python scripts/tests.py
 - 防 DNS 泄漏：国内 IP 兜底必须 `GEOIP,cn,no-resolve`；Shadowrocket 所有 IP 规则强制 `no-resolve`。
 - `jsdelivr.net/com` 必须在上游直连表之前走 `🚀 手动选择`（国内直连被 RST）。
 - 美区 App Store 走 `🍎 App Store`（默认美国节点），排在 AppleTV+ 之后、苹果中国之前。
+- AnyDesk 仅在 `overwrite/Clash_Mi_Merge.yaml` 定义：`anydesk.com`、`net.anydesk.com`、`anydesk.com.cn`、`net.anydesk.com.cn` 使用 `DOMAIN-SUFFIX → DIRECT`，并同步加入 `dns.fake-ip-filter` 的 `+.` 后缀。无需独立分片，不使用 AnyDesk 进程规则，也不依赖 `find-process-mode`；Synology Drive 等其它进程规则保持原样。
+- Clash Mi 更新远程覆写并重新应用配置后，检查实际生效规则和连接：AnyDesk 应命中 `DomainSuffix`，出口为 `DIRECT`；中国区子域可能先命中父后缀 `anydesk.com.cn`。仅下载覆写不代表运行中已生效；本机若为 AnyDesk 将 `find-process-mode` 设为 `always`，恢复为 `off`，不要为此改其它应用规则。
