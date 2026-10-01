@@ -22,6 +22,11 @@ prepend-rules:
   - "DOMAIN,BigRichNAS,DIRECT"
   - "DOMAIN-SUFFIX,BigRichNAS.local,DIRECT"
   - "IP-CIDR,192.168.8.8/32,DIRECT,no-resolve"
+  # AnyDesk：强制直连（避免远程连接通过代理导致延迟与断连）
+  - "PROCESS-NAME,AnyDesk,DIRECT"
+  - "PROCESS-NAME,AnyDesk.exe,DIRECT"
+  - "DOMAIN-SUFFIX,anydesk.com,DIRECT"
+  - "DOMAIN-SUFFIX,net.anydesk.com,DIRECT"
   - "RULE-SET,lc-adblock-domain,REJECT"
   - "RULE-SET,lc-adblock-ip,REJECT,no-resolve"
 
@@ -115,6 +120,9 @@ dns:
     - '+.synology.me'
     - 'BigRichNAS'
     - 'BigRichNAS.local'
+    # AnyDesk（必须真实 IP，避免 Fake-IP 导致连接失败）
+    - '+.anydesk.com'
+    - '+.net.anydesk.com'
     - 'localhost'
     - 'WORKGROUP'
     - '+.lan'
