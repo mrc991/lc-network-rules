@@ -7,6 +7,21 @@
 # 误拦时：删掉下面两条 RULE-SET 或在该行前加 # 即可关闭
 prepend-rules:
   - "AND,((NETWORK,udp),(DST-PORT,443)),REJECT"
+  # Synology Drive / QuickConnect / 家 NAS：强制直连（避免 Fake-IP / 代理打断 QC）
+  - "PROCESS-NAME,cloud-drive-daemon,DIRECT"
+  - "PROCESS-NAME,cloud-drive-connect,DIRECT"
+  - "PROCESS-NAME,cloud-drive-ui,DIRECT"
+  - "PROCESS-NAME,cloud-drive-eventd,DIRECT"
+  - "PROCESS-NAME,SynologyDrive,DIRECT"
+  - "PROCESS-NAME,SynologyDriveClient,DIRECT"
+  - "DOMAIN-SUFFIX,quickconnect.to,DIRECT"
+  - "DOMAIN-SUFFIX,quickconnect.cn,DIRECT"
+  - "DOMAIN-SUFFIX,synology.com,DIRECT"
+  - "DOMAIN-SUFFIX,synology.cn,DIRECT"
+  - "DOMAIN-SUFFIX,synology.me,DIRECT"
+  - "DOMAIN,BigRichNAS,DIRECT"
+  - "DOMAIN-SUFFIX,BigRichNAS.local,DIRECT"
+  - "IP-CIDR,192.168.8.8/32,DIRECT,no-resolve"
   - "RULE-SET,lc-adblock-domain,REJECT"
   - "RULE-SET,lc-adblock-ip,REJECT,no-resolve"
 
@@ -92,6 +107,14 @@ dns:
     - '+.heiyu.space'
     - '+.lazycat.cloud'
     - '+.bigrich.cc'
+    # Synology QuickConnect / NAS（必须真实 IP，否则 Drive 连到 198.18 Fake-IP）
+    - '+.quickconnect.to'
+    - '+.quickconnect.cn'
+    - '+.synology.com'
+    - '+.synology.cn'
+    - '+.synology.me'
+    - 'BigRichNAS'
+    - 'BigRichNAS.local'
     - 'localhost'
     - 'WORKGROUP'
     - '+.lan'
