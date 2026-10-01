@@ -9,6 +9,7 @@ LC 个人分流规则。上游原版 + 本仓库定制，由 GitHub Actions 每�
 | Clash 订阅转换模板（节点分流） | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/clash/Custom_Clash.ini` |
 | Clash Mi 统一覆写 | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/Clash_Mi_Merge.yaml` |
 | OpenClash 覆写模块 LC_AdBlock | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/LC_AdBlock.conf` |
+| OpenClash 覆写模块 LC_AnyDesk | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/LC_AnyDesk.conf` |
 | Shadowrocket 配置（带广告拦截） | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/shadowrocket/Custom_Shadowrocket_whitelist_ad.conf` |
 
 jsDelivr 有缓存，急用时把 `testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/` 换成 `raw.githubusercontent.com/mrc991/lc-network-rules/main/`。
@@ -24,6 +25,8 @@ custom/                  定制（手改这里）
 overwrite/
   Clash_Mi_Merge.yaml    Clash Mi 覆写（手改）
   LC_AdBlock.conf        OpenClash 覆写模块（手改）
+  LC_AnyDesk.conf        OpenClash AnyDesk 域名直连覆写（手改）
+  openclash_fake_filter_anydesk.snippet  路由 fake-ip-filter 片段（手改）
   adblock/               广告 rule-provider（生成）
 clash/                   Custom_Clash.ini（生成）
 shadowrocket/            Shadowrocket 配置（生成）
@@ -66,5 +69,6 @@ python scripts/build.py && python scripts/tests.py
 - 防 DNS 泄漏：国内 IP 兜底必须 `GEOIP,cn,no-resolve`；Shadowrocket 所有 IP 规则强制 `no-resolve`。
 - `jsdelivr.net/com` 必须在上游直连表之前走 `🚀 手动选择`（国内直连被 RST）。
 - 美区 App Store 走 `🍎 App Store`（默认美国节点），排在 AppleTV+ 之后、苹果中国之前。
-- AnyDesk 仅在 `overwrite/Clash_Mi_Merge.yaml` 定义：`anydesk.com`、`net.anydesk.com`、`anydesk.com.cn`、`net.anydesk.com.cn` 使用 `DOMAIN-SUFFIX → DIRECT`，并同步加入 `dns.fake-ip-filter` 的 `+.` 后缀。无需独立分片，不使用 AnyDesk 进程规则，也不依赖 `find-process-mode`；Synology Drive 等其它进程规则保持原样。
-- Clash Mi 更新远程覆写并重新应用配置后，检查实际生效规则和连接：AnyDesk 应命中 `DomainSuffix`，出口为 `DIRECT`；中国区子域可能先命中父后缀 `anydesk.com.cn`。仅下载覆写不代表运行中已生效；本机若为 AnyDesk 将 `find-process-mode` 设为 `always`，恢复为 `off`，不要为此改其它应用规则。
+- AnyDesk（Clash Mi）：在 `overwrite/Clash_Mi_Merge.yaml`：`anydesk.com`、`net.anydesk.com`、`anydesk.com.cn`、`net.anydesk.com.cn` 使用 `DOMAIN-SUFFIX → DIRECT`，并同步加入 `dns.fake-ip-filter` 的 `+.` 后缀。不使用进程规则。
+- AnyDesk（家里路由 OpenClash / GL-MT6000）：规则走 `overwrite/LC_AnyDesk.conf`（+rules DIRECT）或 `custom/clash-overlay.yaml` → Custom_Clash.ini；**Fake-IP 必须**写入路由 `openclash_custom_fake_filter.list`（见 `overwrite/openclash_fake_filter_anydesk.snippet`），否则中继仍会解析成 198.18.x。验证：`boot.net.anydesk.com` / `anydesk.com` 不得为 198.18；连接出口应为 DIRECT。
+- Clash Mi 更新远程覆写并重新应用配置后，检查实际生效规则和连接：AnyDesk 应命中 `DomainSuffix`，出口为 `DIRECT`。

@@ -1,3 +1,15 @@
+## 2026-10-01（路由 OpenClash AnyDesk）
+
+- 任务目标：家里 GL-MT6000 OpenClash（非 PC Clash Mi）为 AnyDesk 增加仅域名 DIRECT + fake-ip-filter，消除 198.18 Fake-IP。
+- 分支名：`main`（直接提交）
+- 修改文件：`custom/clash-overlay.yaml`、`overwrite/LC_AnyDesk.conf`（新建）、`overwrite/openclash_fake_filter_anydesk.snippet`（新建）、`README.md`、`log.md`
+- 路由实改（BIGRICH-HOME → 192.168.8.1）：
+  - 备份后写入 `/etc/openclash/custom/openclash_custom_fake_filter.list` 四条 `+.anydesk*`
+  - 写入 `/etc/openclash/custom/openclash_custom_rules.list` 四条 `DOMAIN-SUFFIX → DIRECT`
+  - `/etc/init.d/openclash restart`；flush DNS/Fake-IP 缓存
+- 验证：运行 `cc.yaml` 含 filter 与规则；`nslookup boot.net.anydesk.com. 192.168.8.1` / `anydesk.com.` 为真实 IP（非 198.18）；`anydesk.com.cn.` → 119.0.68.13。未改公司 Mac。
+- 是否已推送远端：本条随 push 提交。
+
 ## 2026-10-01
 
 - 任务目标：将 Clash Mi AnyDesk 分流改为只靠域名、零进程匹配，并让 Fake-IP 模式下也能按域名命中。
