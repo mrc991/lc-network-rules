@@ -237,10 +237,19 @@ def test_overwrites() -> None:
         _fail("Clash Mi ipv6 must be false")
     if mi["dns"].get("fallback"):
         _fail("Clash Mi dns.fallback must be empty")
+    if mi.get("find-process-mode") != "always":
+        _fail("Clash Mi find-process-mode must be always so PROCESS-NAME rules hit")
     rules = mi.get("prepend-rules") or []
-    for r in ("RULE-SET,lc-adblock-domain,REJECT", "RULE-SET,lc-adblock-ip,REJECT,no-resolve"):
+    for r in ("RULE-SET,lc-adblock-domain,REJECT", "RULE-SET,lc-adblock-ip,REJECT,no-resolve",
+              "PROCESS-NAME,AnyDesk,DIRECT", "PROCESS-NAME,AnyDesk.exe,DIRECT",
+              "DOMAIN-SUFFIX,anydesk.com,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com,DIRECT",
+              "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"):
         if r not in rules:
             _fail(f"Clash Mi prepend-rules missing {r}")
+    filt = mi.get("dns", {}).get("fake-ip-filter") or []
+    for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn"):
+        if r not in filt:
+            _fail(f"Clash Mi fake-ip-filter missing {r}")
     oc_text = (ROOT / "overwrite" / "LC_AdBlock.conf").read_text(encoding="utf-8")
     oc = yaml.safe_load(oc_text.split("[YAML]", 1)[1])
     for doc in (mi, oc):

@@ -22,7 +22,9 @@ prepend-rules:
   - "DOMAIN,BigRichNAS,DIRECT"
   - "DOMAIN-SUFFIX,BigRichNAS.local,DIRECT"
   - "IP-CIDR,192.168.8.8/32,DIRECT,no-resolve"
-  # AnyDesk：仅按域名直连（含中国区，不依赖进程识别）
+  # AnyDesk：进程直连覆盖裸 IP 打洞；域名直连覆盖中继。家用路由不读本文件，要另改 fake-ip 名单。
+  - "PROCESS-NAME,AnyDesk,DIRECT"
+  - "PROCESS-NAME,AnyDesk.exe,DIRECT"
   - "DOMAIN-SUFFIX,anydesk.com,DIRECT"
   - "DOMAIN-SUFFIX,net.anydesk.com,DIRECT"
   - "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT"
@@ -48,6 +50,8 @@ rule-providers:
 
 # 1. 客户端与连接存活优化（各端统一关闭 IPv6，避免运营商 IPv6 DNS 旁路）
 ipv6: false
+# 进程规则（AnyDesk / Synology Drive）要能命中，不能是 off
+find-process-mode: always
 external-ui-url: ""
 global-client-fingerprint: chrome
 keep-alive-idle: 30

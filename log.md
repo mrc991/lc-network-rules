@@ -1,3 +1,13 @@
+## 2026-10-02（Clash Mi 恢复 AnyDesk 进程直连）
+
+- 任务目标：裸 IP 打洞不吃域名规则。Clash Mi 覆写加回 `PROCESS-NAME,AnyDesk` / `AnyDesk.exe` → DIRECT，并把 `find-process-mode` 设为 `always`。路由 Fake-IP 名单当天已核过，未再改路由。
+- 分支名：`main`
+- 修改文件：`overwrite/Clash_Mi_Merge.yaml`、`scripts/tests.py`、`README.md`、`log.md`
+- 改动内容与原因：域名 DIRECT 留着；进程规则放在域名规则前。README 写明家用 MT6000 不会随订阅/覆写自动更新，Fake-IP 名单要单独推。
+- 验证命令及结果：`python3 scripts/tests.py` 全部通过；`git diff --check` 通过。公司 Mac Clash Mi API 仍 401，覆写未在本机应用。
+- 是否已推送远端：本条随 push 提交。
+- 跨仓库联动影响：无。各端 Clash Mi 需手动更新并重新应用覆写后，进程规则才会生效。
+
 ## 2026-10-01（路由 OpenClash AnyDesk）
 
 - 任务目标：家里 GL-MT6000 OpenClash（非 PC Clash Mi）为 AnyDesk 增加仅域名 DIRECT + fake-ip-filter，消除 198.18 Fake-IP。

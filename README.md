@@ -69,6 +69,7 @@ python scripts/build.py && python scripts/tests.py
 - 防 DNS 泄漏：国内 IP 兜底必须 `GEOIP,cn,no-resolve`；Shadowrocket 所有 IP 规则强制 `no-resolve`。
 - `jsdelivr.net/com` 必须在上游直连表之前走 `🚀 手动选择`（国内直连被 RST）。
 - 美区 App Store 走 `🍎 App Store`（默认美国节点），排在 AppleTV+ 之后、苹果中国之前。
-- AnyDesk（Clash Mi）：在 `overwrite/Clash_Mi_Merge.yaml`：`anydesk.com`、`net.anydesk.com`、`anydesk.com.cn`、`net.anydesk.com.cn` 使用 `DOMAIN-SUFFIX → DIRECT`，并同步加入 `dns.fake-ip-filter` 的 `+.` 后缀。不使用进程规则。
+- AnyDesk（Clash Mi）：在 `overwrite/Clash_Mi_Merge.yaml`：`PROCESS-NAME,AnyDesk` / `AnyDesk.exe` 与四个 `DOMAIN-SUFFIX` 都走 `DIRECT`，并写入 `dns.fake-ip-filter`。`find-process-mode` 为 `always`，否则进程规则不生效。域名规则盖不住打洞用的裸 IP。
+- **常设：**改 GitHub 订阅或 Clash Mi 覆写时，家用路由 MT6000 上的 OpenClash **不会**自动跟着生效。必须把同一意图推到路由，尤其是 `openclash_custom_fake_filter.list` 和 AnyDesk 的 DIRECT 规则。更新订阅 ≠ 更新 Fake-IP 名单。
 - AnyDesk（家里路由 OpenClash / GL-MT6000）：规则走 `overwrite/LC_AnyDesk.conf`（+rules DIRECT）或 `custom/clash-overlay.yaml` → Custom_Clash.ini；**Fake-IP 必须**写入路由 `openclash_custom_fake_filter.list`（见 `overwrite/openclash_fake_filter_anydesk.snippet`），否则中继仍会解析成 198.18.x。验证：`boot.net.anydesk.com` / `anydesk.com` 不得为 198.18；连接出口应为 DIRECT。
 - Clash Mi 更新远程覆写并重新应用配置后，检查实际生效规则和连接：AnyDesk 应命中 `DomainSuffix`，出口为 `DIRECT`。
