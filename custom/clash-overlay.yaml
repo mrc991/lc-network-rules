@@ -43,12 +43,9 @@ ops:
       ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,jsdelivr.net
       ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,jsdelivr.com
 
-  - replace: ";谷歌在国内可用的域名直连"
-    lines: |
-      ;谷歌在国内可用的域名直连,但会影响 YouTube 的访问，所以改成谷歌服务,走代理
-  - replace: "ruleset=🎯 全球直连,[]GEOSITE,google-cn"
-    lines: |
-      ruleset=🇬 谷歌服务,[]GEOSITE,google-cn
+  # 上游 c73f931 已删除「谷歌在国内可用的域名直连」和
+  # ruleset=🎯 全球直连,[]GEOSITE,google-cn。谷歌改由后面的
+  # ruleset=🇬 谷歌服务,[]GEOSITE,google 覆盖，不再单独替换。
 
   - after: "ruleset=🎯 全球直连,[]GEOSITE,category-public-tracker"
     lines: |
