@@ -59,7 +59,7 @@ jobs:
       - name: Check referenced rule URLs
         run: python scripts/check_urls.py
 
-      - name: End-to-end (subconverter + Clash Mi overwrite + mihomo -t)
+      - name: End-to-end (subconverter + Clash Mi YAML/JS overwrite + mihomo -t; rebuild Clash Mi rules)
         run: |
           BIN=$(mktemp -d)
           curl -fsSL -o "$BIN/sc.tgz" "$SUBCONVERTER_URL"
@@ -68,14 +68,15 @@ jobs:
           curl -fsSL -o "$BIN/mihomo.gz" "$MIHOMO_URL"
           echo "$MIHOMO_SHA256  $BIN/mihomo.gz" | sha256sum -c -
           gunzip "$BIN/mihomo.gz" && chmod +x "$BIN/mihomo"
-          SUBCONVERTER="$BIN/subconverter/subconverter" MIHOMO="$BIN/mihomo" bash scripts/e2e_clash.sh
+          CLASHMI_WRITE=1 SUBCONVERTER="$BIN/subconverter/subconverter" MIHOMO="$BIN/mihomo" bash scripts/e2e_clash.sh
+          python scripts/tests.py
 
       - name: Commit outputs
         if: github.event_name != 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          OUTPUTS="clash shadowrocket overwrite/adblock overwrite/Clash_Mi_Merge.js"
+          OUTPUTS="clash shadowrocket overwrite/adblock overwrite/Clash_Mi_Merge.js overwrite/Clash_Mi_Merge.yaml"
           if git diff --quiet -- $OUTPUTS && [ -z "$(git ls-files --others --exclude-standard -- $OUTPUTS)" ]; then
             echo "No output changes."
             exit 0

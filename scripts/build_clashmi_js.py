@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""由 overwrite/Clash_Mi_Merge.yaml 生成 Clash Mi「JS 覆写」overwrite/Clash_Mi_Merge.js。
+"""由 custom/Clash_Mi_Merge.src.yaml 生成 Clash Mi「JS 覆写」overwrite/Clash_Mi_Merge.js。
 
 为什么需要 JS：Clash Mi 的 YAML 覆写只做「字典深合并、列表/标量整体替换」，
 不认识 mihomo/Verge 的 prepend-rules（上游 KaringX/clashmi#460 已明确不支持，建议用 JS 覆写）。
@@ -19,13 +19,13 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "overwrite" / "Clash_Mi_Merge.yaml"
+SRC = ROOT / "custom" / "Clash_Mi_Merge.src.yaml"
 DST = ROOT / "overwrite" / "Clash_Mi_Merge.js"
 
-TEMPLATE = """// Clash Mi JS 覆写（自动生成，请勿手改；源文件 overwrite/Clash_Mi_Merge.yaml，生成脚本 scripts/build_clashmi_js.py）
+TEMPLATE = """// Clash Mi JS 覆写（自动生成，请勿手改；源文件 custom/Clash_Mi_Merge.src.yaml，生成脚本 scripts/build_clashmi_js.py）
 // 用法：Clash Mi「覆写」里新增 URL 覆写，类型选 js，地址填
 //   https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/Clash_Mi_Merge.js
-// 并在订阅设置里把覆写从 Clash_Mi_Merge.yaml 换成它。YAML 覆写不支持 prepend-rules，所以必须用 JS。
+// 备用方案：默认的 YAML 覆写 overwrite/Clash_Mi_Merge.yaml 已带完整 rules（前置规则在最前），一般不需要本 JS。
 // 语义：与 YAML 覆写一致（字典深合并，列表/标量整体替换），另把 LC_PREPEND_RULES 插到 rules 最前。
 var LC_PATCH = __PATCH__;
 var LC_PREPEND_RULES = __PREPEND__;
@@ -70,7 +70,7 @@ def render() -> str:
     data = yaml.safe_load(SRC.read_text(encoding="utf-8"))
     prepend = list(data.pop("prepend-rules", None) or [])
     if not prepend:
-        raise SystemExit("[clashmi-js] prepend-rules empty in Clash_Mi_Merge.yaml")
+        raise SystemExit("[clashmi-js] prepend-rules empty in custom/Clash_Mi_Merge.src.yaml")
     patch = json.dumps(data, ensure_ascii=False, indent=2)
     pre = json.dumps(prepend, ensure_ascii=False, indent=2)
     return TEMPLATE.replace("__PATCH__", patch).replace("__PREPEND__", pre)

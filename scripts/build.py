@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import build_adblock  # noqa: E402
 import build_clash  # noqa: E402
 import build_clashmi_js  # noqa: E402
+import build_clashmi_yaml  # noqa: E402
 import build_shadowrocket  # noqa: E402
 import upstream  # noqa: E402
 
@@ -22,6 +23,7 @@ def main() -> None:
     clash_sha = build_clash.main()
     build_adblock.main()
     build_clashmi_js.main()
+    build_clashmi_yaml.refresh()  # 订阅规则由 e2e（CLASHMI_WRITE=1）用 subconverter 展开后重建
     js_sha = build_shadowrocket.main()
     a, j = upstream.AETHERSAILOR, upstream.JOHNSHALL
     LOCK.write_text(

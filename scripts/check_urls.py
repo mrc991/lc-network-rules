@@ -37,12 +37,28 @@ def status(url: str) -> int:
     return 0
 
 
+JSD = re.compile(r"^https://[a-z]*\.?jsdelivr\.net/gh/([^/]+)/([^@/]+)@([^/]+)/(.+)$")
+
+
+def raw_equivalent(url: str) -> str | None:
+    """jsDelivr 地址对应的 GitHub 原始地址；jsDelivr 偶发对 CI 出口返回 404（上游文件其实存在）。"""
+    m = JSD.match(url)
+    if not m:
+        return None
+    owner, repo, ref, path = m.groups()
+    return f"https://raw.githubusercontent.com/{owner}/{repo}/{ref}/{path}"
+
+
 def main() -> None:
     missing, flaky = [], []
     items = urls()
     for u in items:
         c = status(u)
         if c in (404, 410):
+            raw = raw_equivalent(u)
+            if raw and status(raw) == 200:
+                flaky.append(f"jsDelivr {c} but upstream file exists ({raw}) {u}")
+                continue
             missing.append(f"{c} {u}")
         elif c != 200:
             flaky.append(f"{c or 'timeout'} {u}")

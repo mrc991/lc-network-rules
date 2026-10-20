@@ -1,3 +1,13 @@
+## 2026-10-20（Clash Mi YAML 覆写带完整 rules；修 CI #6）
+
+- 任务目标：Clash Mi 的 YAML 覆写不认识 `prepend-rules`（列表整体替换），前置规则在客户端不生效。改为 CI 生成完整 `rules:`：前置 23 条 + subconverter 展开的完整订阅规则（去重）。同时修 issue #6（jsDelivr 对 CI 偶发 404）。
+- 分支名：`main`
+- 修改文件：`custom/Clash_Mi_Merge.src.yaml`（由 `overwrite/Clash_Mi_Merge.yaml` 移来，手改源）、`overwrite/Clash_Mi_Merge.yaml`（改为生成物）、`overwrite/Clash_Mi_Merge.js`、`scripts/build_clashmi_yaml.py`（新增）、`scripts/build_clashmi_js.py`、`scripts/build.py`、`scripts/tests.py`、`scripts/check_urls.py`、`scripts/e2e_clash.sh`、`.github/workflows/build.yml`、`README.md`、`log.md`
+- 改动内容与原因：e2e 用与线上相同的 subconverter 展开（expand 默认）生成订阅，CLASHMI_WRITE=1 时重建覆写 rules；按 Clash Mi 方式合并后断言：开头为前置规则、总数=前置+订阅去重、无重复、节点与策略组不变、每条规则目标存在、RULE-SET 有 provider、末条 MATCH，再 `mihomo -t`。check_urls：jsDelivr 404 时以 raw.githubusercontent 为准，仅警告（#6 三个地址实测均 200，属 CDN 偶发）。
+- 验证命令及结果：本地 build.py / tests.py / check_urls.py（61 条 OK）/ e2e（YAML 与 JS 两条路径 `mihomo -t` 均通过）。用公司 Mac 上真实订阅（1180 条）按 Clash Mi 方式合并：生成规则与真实订阅去重结果完全一致，1203 条、0 重复、0 无效目标，`mihomo -t` 通过。
+- 是否已推送远端：本条随 push 提交。
+- 跨仓库联动影响：只有 Clash Mi 客户端读取 `overwrite/Clash_Mi_Merge.yaml`（OpenClash 用 LC_AdBlock.conf，Shadowrocket 由 Custom_Clash.ini 生成）。各端需在 App 更新覆写、进程匹配模式设 always、重新连接。
+
 ## 2026-10-02（Clash Mi 恢复 AnyDesk 进程直连）
 
 - 任务目标：裸 IP 打洞不吃域名规则。Clash Mi 覆写加回 `PROCESS-NAME,AnyDesk` / `AnyDesk.exe` → DIRECT，并把 `find-process-mode` 设为 `always`。路由 Fake-IP 名单当天已核过，未再改路由。

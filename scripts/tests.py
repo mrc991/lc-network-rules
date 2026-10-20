@@ -230,7 +230,7 @@ def test_adblock_providers() -> None:
 
 
 def test_overwrites() -> None:
-    mi = yaml.safe_load((ROOT / "overwrite" / "Clash_Mi_Merge.yaml").read_text(encoding="utf-8"))
+    mi = yaml.safe_load((ROOT / "custom" / "Clash_Mi_Merge.src.yaml").read_text(encoding="utf-8"))
     if mi["tun"]["strict-route"] is not False or mi["tun"]["stack"] != "system":
         _fail("Clash Mi tun must be strict-route=false, stack=system")
     if mi.get("ipv6") is not False or mi["dns"].get("ipv6") is not False:
@@ -246,6 +246,20 @@ def test_overwrites() -> None:
               "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"):
         if r not in rules:
             _fail(f"Clash Mi prepend-rules missing {r}")
+    import build_clashmi_yaml
+    out = yaml.safe_load((ROOT / "overwrite" / "Clash_Mi_Merge.yaml").read_text(encoding="utf-8"))
+    if "prepend-rules" in out:
+        _fail("overwrite/Clash_Mi_Merge.yaml must not carry prepend-rules (Clash Mi ignores it)")
+    src_rest = {k: v for k, v in mi.items() if k != "prepend-rules"}
+    if {k: v for k, v in out.items() if k != "rules"} != src_rest:
+        _fail("overwrite/Clash_Mi_Merge.yaml non-rules part out of sync with custom/Clash_Mi_Merge.src.yaml")
+    out_rules = out.get("rules") or []
+    if out_rules[:len(rules)] != rules:
+        _fail("overwrite/Clash_Mi_Merge.yaml rules must start with prepend-rules")
+    if len(out_rules) != len(set(out_rules)) or len(out_rules) < 500 or not out_rules[-1].startswith("MATCH,"):
+        _fail("overwrite/Clash_Mi_Merge.yaml rules: duplicates / too few / last not MATCH")
+    if build_clashmi_yaml.render(build_clashmi_yaml.current_sub_rules()) != (ROOT / "overwrite" / "Clash_Mi_Merge.yaml").read_text(encoding="utf-8"):
+        _fail("overwrite/Clash_Mi_Merge.yaml is stale; run scripts/build_clashmi_yaml.py")
     import build_clashmi_js
     js = (ROOT / "overwrite" / "Clash_Mi_Merge.js").read_text(encoding="utf-8")
     if js != build_clashmi_js.render():
