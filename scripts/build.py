@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""一键构建：Clash 分流 → 广告 rule-provider → Shadowrocket，最后写 upstream.lock。
+"""一键构建：Clash 分流 → 广告 rule-provider → Clash Mi JS 覆写 → Shadowrocket，最后写 upstream.lock。
 
 任一步失败即非零退出；CI 只在 build + tests 全部通过后才提交产物。
 """
@@ -11,6 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 import build_adblock  # noqa: E402
 import build_clash  # noqa: E402
+import build_clashmi_js  # noqa: E402
 import build_shadowrocket  # noqa: E402
 import upstream  # noqa: E402
 
@@ -20,6 +21,7 @@ LOCK = upstream.ROOT / "upstream.lock"
 def main() -> None:
     clash_sha = build_clash.main()
     build_adblock.main()
+    build_clashmi_js.main()
     js_sha = build_shadowrocket.main()
     a, j = upstream.AETHERSAILOR, upstream.JOHNSHALL
     LOCK.write_text(

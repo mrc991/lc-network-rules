@@ -246,6 +246,10 @@ def test_overwrites() -> None:
               "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"):
         if r not in rules:
             _fail(f"Clash Mi prepend-rules missing {r}")
+    import build_clashmi_js
+    js = (ROOT / "overwrite" / "Clash_Mi_Merge.js").read_text(encoding="utf-8")
+    if js != build_clashmi_js.render():
+        _fail("overwrite/Clash_Mi_Merge.js is stale; run scripts/build_clashmi_js.py")
     filt = mi.get("dns", {}).get("fake-ip-filter") or []
     for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn"):
         if r not in filt:

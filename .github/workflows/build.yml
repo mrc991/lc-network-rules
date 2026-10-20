@@ -10,6 +10,7 @@ on:
     paths:
       - "custom/**"
       - "overwrite/Clash_Mi_Merge.yaml"
+      - "overwrite/Clash_Mi_Merge.js"
       - "overwrite/LC_AdBlock.conf"
       - "scripts/**"
       - ".github/workflows/build.yml"
@@ -74,7 +75,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          OUTPUTS="clash shadowrocket overwrite/adblock"
+          OUTPUTS="clash shadowrocket overwrite/adblock overwrite/Clash_Mi_Merge.js"
           if git diff --quiet -- $OUTPUTS && [ -z "$(git ls-files --others --exclude-standard -- $OUTPUTS)" ]; then
             echo "No output changes."
             exit 0

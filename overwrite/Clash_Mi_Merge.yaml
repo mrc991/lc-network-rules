@@ -5,6 +5,9 @@
 # 0. 强制 QUIC 回退 TCP；广告拦截（与 Shadowrocket 同源 Johnshall 列表）
 # 广告规则以 rule-provider 加载，不展开进订阅；直接 REJECT，不依赖订阅里的任何分组
 # 误拦时：删掉下面两条 RULE-SET 或在该行前加 # 即可关闭
+# 重要：Clash Mi 的 YAML 覆写不支持 prepend-rules（会被忽略），客户端必须改用同目录生成的 Clash_Mi_Merge.js（JS 覆写）。
+# 本文件仍是唯一源头，CI 由 scripts/build_clashmi_js.py 生成 .js；改这里即可，不要手改 .js。
+# find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
 prepend-rules:
   - "AND,((NETWORK,udp),(DST-PORT,443)),REJECT"
   # Synology Drive / QuickConnect / 家 NAS：强制直连（避免 Fake-IP / 代理打断 QC）

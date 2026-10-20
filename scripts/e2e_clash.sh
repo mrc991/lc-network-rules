@@ -60,27 +60,38 @@ curl -fsS --max-time 300 -o "$WORK/sub.yaml" \
 if grep -q 'exceeded limit' "$WORK/sc.log"; then echo "[e2e] subconverter hit ruleset limit"; exit 1; fi
 [ -n "${E2E_OUT:-}" ] && cp "$WORK/sub.yaml" "$E2E_OUT"
 
-# 4) 叠 Clash Mi 覆写（prepend-rules / rule-providers / 顶层键合并），得到最终运行配置
-"$PY" - "$WORK/sub.yaml" "$ROOT/overwrite/Clash_Mi_Merge.yaml" "$WORK/final.yaml" <<'EOF'
-import sys, yaml
+# 4) 叠 Clash Mi 覆写，得到最终运行配置。
+# Clash Mi 的 YAML 覆写不支持 prepend-rules（字典深合并、列表整体替换），所以客户端必须用 JS 覆写；
+# 这里直接用 node 跑 overwrite/Clash_Mi_Merge.js 的 main()，与 Clash Mi 的 JS 覆写同一入口。
+"$PY" - "$WORK/sub.yaml" "$WORK/sub.json" <<'EOF'
+import sys, json, yaml
 sub = yaml.safe_load(open(sys.argv[1], encoding="utf-8"))
-mi = yaml.safe_load(open(sys.argv[2], encoding="utf-8"))
 groups = {g["name"] for g in sub.get("proxy-groups", [])}
 assert len(groups) >= 40, f"too few groups: {len(groups)}"
 assert "🍎 App Store" in groups and "🎥 TV Box" in groups, "custom groups missing"
 rules = sub.get("rules", [])
 assert any(r.startswith("GEOIP,cn,") and r.endswith("no-resolve") for r in rules), "GEOIP,cn no-resolve missing"
-for k, v in mi.items():
-    if k == "prepend-rules":
-        sub["rules"] = list(v) + sub.get("rules", [])
-    elif k == "rule-providers":
-        sub.setdefault("rule-providers", {}).update(v)
-    elif isinstance(v, dict) and isinstance(sub.get(k), dict):
-        sub[k].update(v)
-    else:
-        sub[k] = v
-yaml.safe_dump(sub, open(sys.argv[3], "w", encoding="utf-8"), allow_unicode=True, sort_keys=False)
-print(f"[e2e] groups={len(groups)} rules={len(sub['rules'])} providers={len(sub.get('rule-providers', {}))}")
+json.dump(sub, open(sys.argv[2], "w", encoding="utf-8"), ensure_ascii=False)
+EOF
+node -e '
+const fs = require("fs");
+const src = fs.readFileSync(process.argv[1], "utf8");
+const main = new Function(src + "\nreturn main;")();
+const out = main(JSON.parse(fs.readFileSync(process.argv[2], "utf8")));
+fs.writeFileSync(process.argv[3], JSON.stringify(out));
+' "$ROOT/overwrite/Clash_Mi_Merge.js" "$WORK/sub.json" "$WORK/final.json"
+"$PY" - "$ROOT/overwrite/Clash_Mi_Merge.yaml" "$WORK/final.json" "$WORK/final.yaml" <<'EOF'
+import sys, json, yaml
+mi = yaml.safe_load(open(sys.argv[1], encoding="utf-8"))
+cfg = json.load(open(sys.argv[2], encoding="utf-8"))
+pre = mi["prepend-rules"]
+assert cfg["rules"][:len(pre)] == pre, "JS overwrite did not prepend rules"
+assert cfg.get("find-process-mode") == "always", "find-process-mode not always after JS overwrite"
+for name in mi["rule-providers"]:
+    assert name in cfg.get("rule-providers", {}), f"rule-provider {name} missing after JS overwrite"
+assert "prepend-rules" not in cfg, "prepend-rules key leaked into final config"
+yaml.safe_dump(cfg, open(sys.argv[3], "w", encoding="utf-8"), allow_unicode=True, sort_keys=False)
+print(f"[e2e] rules={len(cfg['rules'])} providers={len(cfg.get('rule-providers', {}))} prepend={len(pre)}")
 EOF
 
 # 5) mihomo 校验（会下载 geo 数据与 rule-provider）
