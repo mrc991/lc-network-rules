@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1185 条，前置：23 条，合计：1208 条
+# 订阅：1187 条，前置：24 条，合计：1211 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -250,6 +250,7 @@ rules:
 - DOMAIN-SUFFIX,net.anydesk.com,DIRECT
 - DOMAIN-SUFFIX,anydesk.com.cn,DIRECT
 - DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT
+- DOMAIN,homebistro.bigrich.cc,DIRECT
 - RULE-SET,lc-adblock-domain,REJECT
 - RULE-SET,lc-adblock-ip,REJECT,no-resolve
 - GEOSITE,private,🎯 全球直连
@@ -1053,6 +1054,7 @@ rules:
 - DOMAIN-SUFFIX,sxstczx.com,🎯 全球直连
 - DOMAIN-SUFFIX,sy1.top,🎯 全球直连
 - DOMAIN-SUFFIX,szfx.top,🎯 全球直连
+- DOMAIN-SUFFIX,szmtzd.com,🎯 全球直连
 - DOMAIN-SUFFIX,sztopten.com,🎯 全球直连
 - DOMAIN-SUFFIX,taichuansmart.com,🎯 全球直连
 - DOMAIN-SUFFIX,tailgdd.com,🎯 全球直连
@@ -1185,6 +1187,7 @@ rules:
 - DOMAIN-SUFFIX,xingaochengtai.com,🎯 全球直连
 - DOMAIN-SUFFIX,xinghaiwaimai.com,🎯 全球直连
 - DOMAIN-SUFFIX,xingmojs.com,🎯 全球直连
+- DOMAIN-SUFFIX,xingpaste.com,🎯 全球直连
 - DOMAIN-SUFFIX,xingyaozhilian.com,🎯 全球直连
 - DOMAIN-SUFFIX,xinstall.top,🎯 全球直连
 - DOMAIN-SUFFIX,xiqueer.com,🎯 全球直连
