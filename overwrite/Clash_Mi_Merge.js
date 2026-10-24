@@ -273,6 +273,7 @@ var LC_PREPEND_RULES = [
   "DOMAIN-SUFFIX,net.anydesk.com,DIRECT",
   "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT",
   "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT",
+  "DOMAIN,homebistro.bigrich.cc,DIRECT",
   "RULE-SET,lc-adblock-domain,REJECT",
   "RULE-SET,lc-adblock-ip,REJECT,no-resolve"
 ];

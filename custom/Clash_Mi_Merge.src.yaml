@@ -34,6 +34,8 @@ prepend-rules:
   - "DOMAIN-SUFFIX,net.anydesk.com,DIRECT"
   - "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT"
   - "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"
+  # HomeBistro：家里访问走直连（不经代理），让 Cloudflare 看到家庭公网出口，应用据此识别局域网
+  - "DOMAIN,homebistro.bigrich.cc,DIRECT"
   - "RULE-SET,lc-adblock-domain,REJECT"
   - "RULE-SET,lc-adblock-ip,REJECT,no-resolve"
 

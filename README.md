@@ -87,3 +87,4 @@ python scripts/build.py && python scripts/tests.py
 - **常设：**改 GitHub 订阅或 Clash Mi 覆写时，家用路由 MT6000 上的 OpenClash **不会**自动跟着生效。必须把同一意图推到路由，尤其是 `openclash_custom_fake_filter.list` 和 AnyDesk 的 DIRECT 规则。更新订阅 ≠ 更新 Fake-IP 名单。
 - AnyDesk（家里路由 OpenClash / GL-MT6000）：规则走 `overwrite/LC_AnyDesk.conf`（+rules DIRECT）或 `custom/clash-overlay.yaml` → Custom_Clash.ini；**Fake-IP 必须**写入路由 `openclash_custom_fake_filter.list`（见 `overwrite/openclash_fake_filter_anydesk.snippet`），否则中继仍会解析成 198.18.x。验证：`boot.net.anydesk.com` / `anydesk.com` 不得为 198.18；连接出口应为 DIRECT。
 - Clash Mi 更新远程覆写并重新应用配置后，检查实际生效规则和连接：AnyDesk 应命中 `DomainSuffix`，出口为 `DIRECT`。
+- HomeBistro（家里访问 / 局域网识别）：`custom/Clash_Mi_Merge.src.yaml` 前置 `DOMAIN,homebistro.bigrich.cc,DIRECT`，让 Cloudflare 看到家庭公网出口；应用侧靠 `/api/net/beacon` + `/api/net/hint` 判断「是否在家」并自动跳到局域网地址。家里路由 MT6000 的 `openclash_custom_rules.list` 有同一条（2026-10-24 加）。代理出口 IP（45.62.118.67 / 192.210.136.225）在应用侧被排除，避免在外网被误判。
