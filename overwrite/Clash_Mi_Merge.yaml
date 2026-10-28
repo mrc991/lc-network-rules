@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1194 条，前置：24 条，合计：1218 条
+# 订阅：1200 条，前置：24 条，合计：1224 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -448,6 +448,7 @@ rules:
 - DOMAIN-SUFFIX,cg3da.com,🎯 全球直连
 - DOMAIN-SUFFIX,cgicop.com,🎯 全球直连
 - DOMAIN-SUFFIX,changjirb.com,🎯 全球直连
+- DOMAIN-SUFFIX,changzhi.top,🎯 全球直连
 - DOMAIN-SUFFIX,chaxunjiao.com,🎯 全球直连
 - DOMAIN-SUFFIX,chaz.fun,🎯 全球直连
 - DOMAIN-SUFFIX,checkip.dyndns.org,🎯 全球直连
@@ -709,6 +710,7 @@ rules:
 - DOMAIN-SUFFIX,hub.xdark.top,🎯 全球直连
 - DOMAIN-SUFFIX,hueihuei.top,🎯 全球直连
 - DOMAIN-SUFFIX,huikao8.com,🎯 全球直连
+- DOMAIN-SUFFIX,human-horizons.com,🎯 全球直连
 - DOMAIN-SUFFIX,hutaoyun.top,🎯 全球直连
 - DOMAIN-SUFFIX,hwbim.com,🎯 全球直连
 - DOMAIN-SUFFIX,hwjianmo.com,🎯 全球直连
@@ -812,6 +814,7 @@ rules:
 - DOMAIN-SUFFIX,laogongju.com,🎯 全球直连
 - DOMAIN-SUFFIX,latexlive.com,🎯 全球直连
 - DOMAIN-SUFFIX,laupqc.com,🎯 全球直连
+- DOMAIN-SUFFIX,ldboost.com,🎯 全球直连
 - DOMAIN-SUFFIX,leadweigh.com,🎯 全球直连
 - DOMAIN-SUFFIX,leelen.com,🎯 全球直连
 - DOMAIN-SUFFIX,letaoedu.com,🎯 全球直连
@@ -824,6 +827,7 @@ rules:
 - DOMAIN-SUFFIX,listenai.com,🎯 全球直连
 - DOMAIN-SUFFIX,liunn.com,🎯 全球直连
 - DOMAIN-SUFFIX,liveperson.net,🎯 全球直连
+- DOMAIN-SUFFIX,liyunol.com,🎯 全球直连
 - DOMAIN-SUFFIX,ljj233.top,🎯 全球直连
 - DOMAIN-SUFFIX,longmenshuju.com,🎯 全球直连
 - DOMAIN-SUFFIX,loveutips.com,🎯 全球直连
@@ -982,6 +986,7 @@ rules:
 - DOMAIN-SUFFIX,quxuanshu.com,🎯 全球直连
 - DOMAIN-SUFFIX,qweapi.com,🎯 全球直连
 - DOMAIN-SUFFIX,qweatherapi.com,🎯 全球直连
+- DOMAIN-SUFFIX,qzy.xyz,🎯 全球直连
 - DOMAIN-SUFFIX,qzyun.net,🎯 全球直连
 - DOMAIN-SUFFIX,ranwen.tw,🎯 全球直连
 - DOMAIN-SUFFIX,rayws.top,🎯 全球直连
@@ -1188,6 +1193,7 @@ rules:
 - DOMAIN-SUFFIX,xiaolikj.online,🎯 全球直连
 - DOMAIN-SUFFIX,xiaomaicn.com,🎯 全球直连
 - DOMAIN-SUFFIX,xiaoxia.vip,🎯 全球直连
+- DOMAIN-SUFFIX,xiaoyao.co,🎯 全球直连
 - DOMAIN-SUFFIX,xiaoyuan888.com,🎯 全球直连
 - DOMAIN-SUFFIX,xiberia.net,🎯 全球直连
 - DOMAIN-SUFFIX,ximogo.com,🎯 全球直连
