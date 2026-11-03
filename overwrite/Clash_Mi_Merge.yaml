@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1252 条，前置：24 条，合计：1276 条
+# 订阅：1252 条，前置：58 条，合计：1310 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -148,6 +148,25 @@ dns:
   - +.ff14.sdo.com
   - ff.dorado.sdo.com
   - +.blzstatic.cn
+  - +.apple-pay.com
+  - +.applepay.com
+  - +.applewallet.com
+  - +.smp-device.apple.com
+  - +.smp-device-content.apple.com
+  - +.smp-payment.apple.com
+  - +.apple-pay-gateway.apple.com
+  - pass.id.apple.com
+  - wallet.apple.com
+  - smoot.apple.com
+  - +.unionpay.com
+  - +.unionpay.cn
+  - +.unionpaysecure.com
+  - +.unionpayintl.com
+  - +.95516.com
+  - +.95516.cn
+  - +.cup.com.cn
+  - +.chinaunionpay.com
+  - +.cloudpay.com.cn
   - +.services.googleapis.cn
   - lens.l.google.com
   - stun.l.google.com
@@ -215,6 +234,16 @@ sniffer:
   override-destination: true
   force-dns-mapping: true
   parse-pure-ip: true
+  skip-domain:
+  - Mijia Cloud
+  - dlg.io.mi.com
+  - +.push.apple.com
+  - +.apple.com
+  - +.apple-pay.com
+  - +.applepay.com
+  - +.applewallet.com
+  - +.unionpay.com
+  - +.95516.com
   sniff:
     TLS:
       ports:
@@ -251,6 +280,40 @@ rules:
 - DOMAIN-SUFFIX,anydesk.com.cn,DIRECT
 - DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT
 - DOMAIN,homebistro.bigrich.cc,DIRECT
+- DOMAIN-SUFFIX,apple-pay.com,DIRECT
+- DOMAIN-SUFFIX,applepay.com,DIRECT
+- DOMAIN-SUFFIX,applepaycash.cn,DIRECT
+- DOMAIN-SUFFIX,applepaysupplies.cn,DIRECT
+- DOMAIN-SUFFIX,applewallet.com,DIRECT
+- DOMAIN-SUFFIX,smp-device.apple.com,DIRECT
+- DOMAIN-SUFFIX,smp-device-content.apple.com,DIRECT
+- DOMAIN-SUFFIX,smp-payment.apple.com,DIRECT
+- DOMAIN-SUFFIX,apple-pay-gateway.apple.com,DIRECT
+- DOMAIN-SUFFIX,pass.id.apple.com,DIRECT
+- DOMAIN-SUFFIX,wallet.apple.com,DIRECT
+- DOMAIN-SUFFIX,api.apple-pay.com,DIRECT
+- DOMAIN-SUFFIX,c-apple-pay.apple.com,DIRECT
+- DOMAIN-SUFFIX,smoot.apple.com,DIRECT
+- DOMAIN-KEYWORD,apple-pay,DIRECT
+- DOMAIN-SUFFIX,unionpay.com,DIRECT
+- DOMAIN-SUFFIX,unionpay.cn,DIRECT
+- DOMAIN-SUFFIX,unionpaysecure.com,DIRECT
+- DOMAIN-SUFFIX,unionpayintl.com,DIRECT
+- DOMAIN-SUFFIX,unionpayintl.cn,DIRECT
+- DOMAIN-SUFFIX,95516.com,DIRECT
+- DOMAIN-SUFFIX,95516.cn,DIRECT
+- DOMAIN-SUFFIX,95516.net,DIRECT
+- DOMAIN-SUFFIX,chinaums.com,DIRECT
+- DOMAIN-SUFFIX,chinapay.com,DIRECT
+- DOMAIN-SUFFIX,chinapay.cn,DIRECT
+- DOMAIN-SUFFIX,chinaunionpay.com,DIRECT
+- DOMAIN-SUFFIX,chinaunionpay.com.cn,DIRECT
+- DOMAIN-SUFFIX,chinaunionpay.net,DIRECT
+- DOMAIN-SUFFIX,cup.com.cn,DIRECT
+- DOMAIN-SUFFIX,cup62.cn,DIRECT
+- DOMAIN-SUFFIX,cloudpay.com.cn,DIRECT
+- DOMAIN-SUFFIX,airepay.net,DIRECT
+- DOMAIN-SUFFIX,chinapayhongkong.com,DIRECT
 - RULE-SET,lc-adblock-domain,REJECT
 - RULE-SET,lc-adblock-ip,REJECT,no-resolve
 - GEOSITE,private,🎯 全球直连

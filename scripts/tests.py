@@ -123,6 +123,8 @@ def test_priority_us_appstore_and_unionpay() -> None:
     text = "\n".join(rules)
     if "95516.com" not in text or "unionpay.com" not in text:
         _fail("priority rules missing UnionPay domains")
+    if "smp-device.apple.com" not in text or "apple-pay-gateway.apple.com" not in text:
+        _fail("priority rules missing Apple Pay domains")
     if "PROCESS-NAME,AppStore,🍎 App Store" not in text:
         _fail("AppStore process must go to 🍎 App Store")
     if any("AppStore,🎯 全球直连" in x for x in rules):
@@ -265,9 +267,13 @@ def test_overwrites() -> None:
     if js != build_clashmi_js.render():
         _fail("overwrite/Clash_Mi_Merge.js is stale; run scripts/build_clashmi_js.py")
     filt = mi.get("dns", {}).get("fake-ip-filter") or []
-    for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn"):
+    for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn", "+.smp-device.apple.com", "+.unionpay.com"):
         if r not in filt:
             _fail(f"Clash Mi fake-ip-filter missing {r}")
+    sniff_skip = mi.get("sniffer", {}).get("skip-domain") or []
+    for s in ("+.apple.com", "+.push.apple.com", "+.unionpay.com"):
+        if s not in sniff_skip:
+            _fail(f"Clash Mi sniffer skip-domain missing {s}")
     oc_text = (ROOT / "overwrite" / "LC_AdBlock.conf").read_text(encoding="utf-8")
     oc = yaml.safe_load(oc_text.split("[YAML]", 1)[1])
     for doc in (mi, oc):

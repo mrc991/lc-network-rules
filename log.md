@@ -1,3 +1,19 @@
+## 2026-11-03（Apple Pay / 钱包 / 银联直连与 Fake-IP 过滤）
+
+- **任务目标**：修复 iPhone 在 Wi-Fi 下 Apple Pay / 钱包支付频繁卡顿超时、必须断开 Wi-Fi 才能成功的问题。
+- **分支名**：main
+- **修改文件**：
+  - custom/clash-overlay.yaml：Custom_Clash.ini 中补充 Apple Pay 核心通信域名强制直连
+  - custom/Clash_Mi_Merge.src.yaml：
+    - prepend-rules 增加 Apple Pay 与银联域名 DIRECT
+    - dns.fake-ip-filter 增加 Apple Pay 与银联核心域名真实 IP 解析
+    - sniffer.skip-domain 增加 Apple 支付与推送域名，避免 TLS SNI 目的重写破坏 mTLS
+  - scripts/sr_base.py：Shadowrocket skip-proxy 与 priority_direct_rules() 同步补齐 Apple Pay
+  - scripts/tests.py：新增 Apple Pay 规则与 Fake-IP / Sniffer 断言
+- **验证命令及结果**：python scripts/build.py 生成物同步；python scripts/tests.py 全部 10 项通过。
+- **是否已推送远端**：本条随 push 提交。
+- **跨仓库联动影响**：工作区 9.tools/GitHub/lc-network-rules/ 与 README.md 同步；家用路由 MT6000 需写入对应 fake-ip-filter 与 openclash_custom_rules.list。
+
 ## 2026-10-20（Clash Mi YAML 覆写带完整 rules；修 CI #6）
 
 - 任务目标：Clash Mi 的 YAML 覆写不认识 `prepend-rules`（列表整体替换），前置规则在客户端不生效。改为 CI 生成完整 `rules:`：前置 23 条 + subconverter 展开的完整订阅规则（去重）。同时修 issue #6（jsDelivr 对 CI 偶发 404）。

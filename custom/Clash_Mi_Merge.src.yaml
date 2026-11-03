@@ -36,6 +36,41 @@ prepend-rules:
   - "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"
   # HomeBistro：家里访问走直连（不经代理），让 Cloudflare 看到家庭公网出口，应用据此识别局域网
   - "DOMAIN,homebistro.bigrich.cc,DIRECT"
+  # Apple Pay / 钱包 / 银联：强制直连（防 Fake-IP 劫持与海外节点触发银行/银联风控）
+  - "DOMAIN-SUFFIX,apple-pay.com,DIRECT"
+  - "DOMAIN-SUFFIX,applepay.com,DIRECT"
+  - "DOMAIN-SUFFIX,applepaycash.cn,DIRECT"
+  - "DOMAIN-SUFFIX,applepaysupplies.cn,DIRECT"
+  - "DOMAIN-SUFFIX,applewallet.com,DIRECT"
+  - "DOMAIN-SUFFIX,smp-device.apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,smp-device-content.apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,smp-payment.apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,apple-pay-gateway.apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,pass.id.apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,wallet.apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,api.apple-pay.com,DIRECT"
+  - "DOMAIN-SUFFIX,c-apple-pay.apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,smoot.apple.com,DIRECT"
+  - "DOMAIN-KEYWORD,apple-pay,DIRECT"
+  - "DOMAIN-SUFFIX,unionpay.com,DIRECT"
+  - "DOMAIN-SUFFIX,unionpay.cn,DIRECT"
+  - "DOMAIN-SUFFIX,unionpaysecure.com,DIRECT"
+  - "DOMAIN-SUFFIX,unionpayintl.com,DIRECT"
+  - "DOMAIN-SUFFIX,unionpayintl.cn,DIRECT"
+  - "DOMAIN-SUFFIX,95516.com,DIRECT"
+  - "DOMAIN-SUFFIX,95516.cn,DIRECT"
+  - "DOMAIN-SUFFIX,95516.net,DIRECT"
+  - "DOMAIN-SUFFIX,chinaums.com,DIRECT"
+  - "DOMAIN-SUFFIX,chinapay.com,DIRECT"
+  - "DOMAIN-SUFFIX,chinapay.cn,DIRECT"
+  - "DOMAIN-SUFFIX,chinaunionpay.com,DIRECT"
+  - "DOMAIN-SUFFIX,chinaunionpay.com.cn,DIRECT"
+  - "DOMAIN-SUFFIX,chinaunionpay.net,DIRECT"
+  - "DOMAIN-SUFFIX,cup.com.cn,DIRECT"
+  - "DOMAIN-SUFFIX,cup62.cn,DIRECT"
+  - "DOMAIN-SUFFIX,cloudpay.com.cn,DIRECT"
+  - "DOMAIN-SUFFIX,airepay.net,DIRECT"
+  - "DOMAIN-SUFFIX,chinapayhongkong.com,DIRECT"
   - "RULE-SET,lc-adblock-domain,REJECT"
   - "RULE-SET,lc-adblock-ip,REJECT,no-resolve"
 
@@ -206,6 +241,27 @@ dns:
     - 'ff.dorado.sdo.com'
     - '+.blzstatic.cn'
 
+    # --- Apple Pay / 钱包 / 银联支付 (防 Fake-IP 导致 mTLS 校验与发卡行风控超时) ---
+    - '+.apple-pay.com'
+    - '+.applepay.com'
+    - '+.applewallet.com'
+    - '+.smp-device.apple.com'
+    - '+.smp-device-content.apple.com'
+    - '+.smp-payment.apple.com'
+    - '+.apple-pay-gateway.apple.com'
+    - 'pass.id.apple.com'
+    - 'wallet.apple.com'
+    - 'smoot.apple.com'
+    - '+.unionpay.com'
+    - '+.unionpay.cn'
+    - '+.unionpaysecure.com'
+    - '+.unionpayintl.com'
+    - '+.95516.com'
+    - '+.95516.cn'
+    - '+.cup.com.cn'
+    - '+.chinaunionpay.com'
+    - '+.cloudpay.com.cn'
+
     # --- 系统与基础服务 ---
     - '+.services.googleapis.cn' # Google CN
     - 'lens.l.google.com'
@@ -288,6 +344,16 @@ sniffer:
   override-destination: true
   force-dns-mapping: true
   parse-pure-ip: true
+  skip-domain:
+    - 'Mijia Cloud'
+    - 'dlg.io.mi.com'
+    - '+.push.apple.com'
+    - '+.apple.com'
+    - '+.apple-pay.com'
+    - '+.applepay.com'
+    - '+.applewallet.com'
+    - '+.unionpay.com'
+    - '+.95516.com'
   sniff:
     TLS:
       ports: [443, 8443]

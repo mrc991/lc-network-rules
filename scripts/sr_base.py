@@ -152,7 +152,13 @@ PRIMARY_DNS = (
     "https://1.12.12.12/dns-query"
 )
 FALLBACK_DNS = "fallback-dns-server = 223.5.5.5, 119.29.29.29"
-SKIP_PROXY_EXTRA = "*.95516.com, *.unionpay.com, *.unionpaysecure.com"
+SKIP_PROXY_EXTRA = (
+    "*.95516.com, *.unionpay.com, *.unionpaysecure.com, "
+    "*.apple-pay.com, *.applepay.com, *.applewallet.com, "
+    "smp-device.apple.com, smp-device-content.apple.com, "
+    "smp-payment.apple.com, apple-pay-gateway.apple.com, "
+    "pass.id.apple.com, wallet.apple.com, smoot.apple.com"
+)
 
 
 def priority_direct_rules() -> list[str]:
@@ -167,6 +173,24 @@ def priority_direct_rules() -> list[str]:
         "USER-AGENT,com.apple.appstored*,🍎 App Store",
         "DOMAIN-SUFFIX,apps.apple.com,🍎 App Store",
         "DOMAIN-SUFFIX,appsto.re,🍎 App Store",
+        "# Apple Pay 钱包直连",
+        "PROCESS-NAME,Passbook,🎯 全球直连",
+        "PROCESS-NAME,passd,🎯 全球直连",
+        "DOMAIN-SUFFIX,apple-pay.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,applepay.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,applepaycash.cn,🎯 全球直连",
+        "DOMAIN-SUFFIX,applepaysupplies.cn,🎯 全球直连",
+        "DOMAIN-SUFFIX,applewallet.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,smp-device.apple.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,smp-device-content.apple.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,smp-payment.apple.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,apple-pay-gateway.apple.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,pass.id.apple.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,wallet.apple.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,api.apple-pay.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,c-apple-pay.apple.com,🎯 全球直连",
+        "DOMAIN-SUFFIX,smoot.apple.com,🎯 全球直连",
+        "DOMAIN-KEYWORD,apple-pay,🎯 全球直连",
         "PROCESS-NAME,云闪付,🎯 全球直连",
         "PROCESS-NAME,UPWallet,🎯 全球直连",
         "PROCESS-NAME,UnionPay,🎯 全球直连",

@@ -75,6 +75,22 @@ ops:
       ruleset=🍎 苹果中国,[]DOMAIN-SUFFIX,cdn-apple.com
       ruleset=🍎 苹果中国,[]DOMAIN-SUFFIX,icloud.com.cn
       ruleset=🍎 苹果中国,[]DOMAIN-SUFFIX,apple.com.cn
+      ; Apple Pay / 钱包：强制直连（避免落入漏网之鱼走海外节点触发银行/银联风控）
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,apple-pay.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,applepay.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,applepaycash.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,applepaysupplies.cn
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,applewallet.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,smp-device.apple.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,smp-device-content.apple.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,smp-payment.apple.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,apple-pay-gateway.apple.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,pass.id.apple.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,wallet.apple.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,api.apple-pay.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,c-apple-pay.apple.com
+      ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,smoot.apple.com
+      ruleset=🎯 全球直连,[]DOMAIN-KEYWORD,apple-pay
 
   - replace: "ruleset=Ⓜ️ 微软服务,[]GEOSITE,microsoft"
     lines: |
