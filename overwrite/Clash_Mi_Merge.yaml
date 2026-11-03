@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1252 条，前置：58 条，合计：1310 条
+# 订阅：1272 条，前置：58 条，合计：1330 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -373,6 +373,7 @@ rules:
 - DOMAIN-SUFFIX,52met.com,🎯 全球直连
 - DOMAIN-SUFFIX,52muban.com,🎯 全球直连
 - DOMAIN-SUFFIX,52youzai.com,🎯 全球直连
+- DOMAIN-SUFFIX,52ywp.com,🎯 全球直连
 - DOMAIN-SUFFIX,55555.ink,🎯 全球直连
 - DOMAIN-SUFFIX,56tvc.com,🎯 全球直连
 - DOMAIN-SUFFIX,580ai.net,🎯 全球直连
@@ -560,6 +561,7 @@ rules:
 - DOMAIN-SUFFIX,crrcgo.cc,🎯 全球直连
 - DOMAIN-SUFFIX,crtyhr.com,🎯 全球直连
 - DOMAIN-SUFFIX,csqaq.com,🎯 全球直连
+- DOMAIN-SUFFIX,cyberpig.tech,🎯 全球直连
 - DOMAIN-SUFFIX,cydiabc.top,🎯 全球直连
 - DOMAIN-SUFFIX,cym520.top,🎯 全球直连
 - DOMAIN-SUFFIX,cyouzai.com,🎯 全球直连
@@ -907,9 +909,11 @@ rules:
 - DOMAIN-SUFFIX,leux.net,🎯 全球直连
 - DOMAIN-SUFFIX,lezuan6.com,🎯 全球直连
 - DOMAIN-SUFFIX,lg3000.top,🎯 全球直连
+- DOMAIN-SUFFIX,lianguo-tech.com,🎯 全球直连
 - DOMAIN-SUFFIX,lightmake.site,🎯 全球直连
 - DOMAIN-SUFFIX,linka2a.net,🎯 全球直连
 - DOMAIN-SUFFIX,linkcircle.net,🎯 全球直连
+- DOMAIN-SUFFIX,linkease.net,🎯 全球直连
 - DOMAIN-SUFFIX,linux.sb,🎯 全球直连
 - DOMAIN-SUFFIX,listenai.com,🎯 全球直连
 - DOMAIN-SUFFIX,liunn.com,🎯 全球直连
@@ -1214,6 +1218,7 @@ rules:
 - DOMAIN-SUFFIX,touchgal.ink,🎯 全球直连
 - DOMAIN-SUFFIX,touchgaloss.com,🎯 全球直连
 - DOMAIN-SUFFIX,tozi-cn.top,🎯 全球直连
+- DOMAIN-SUFFIX,tracker.ink,🎯 全球直连
 - DOMAIN-SUFFIX,trjho.com,🎯 全球直连
 - DOMAIN-SUFFIX,ts3.ink,🎯 全球直连
 - DOMAIN-SUFFIX,ttshitu.com,🎯 全球直连
@@ -1494,6 +1499,21 @@ rules:
 - DOMAIN-SUFFIX,cdn-apple.com,🍎 苹果中国
 - DOMAIN-SUFFIX,icloud.com.cn,🍎 苹果中国
 - DOMAIN-SUFFIX,apple.com.cn,🍎 苹果中国
+- DOMAIN-SUFFIX,apple-pay.com,🎯 全球直连
+- DOMAIN-SUFFIX,applepay.com,🎯 全球直连
+- DOMAIN-SUFFIX,applepaycash.cn,🎯 全球直连
+- DOMAIN-SUFFIX,applepaysupplies.cn,🎯 全球直连
+- DOMAIN-SUFFIX,applewallet.com,🎯 全球直连
+- DOMAIN-SUFFIX,smp-device.apple.com,🎯 全球直连
+- DOMAIN-SUFFIX,smp-device-content.apple.com,🎯 全球直连
+- DOMAIN-SUFFIX,smp-payment.apple.com,🎯 全球直连
+- DOMAIN-SUFFIX,apple-pay-gateway.apple.com,🎯 全球直连
+- DOMAIN-SUFFIX,pass.id.apple.com,🎯 全球直连
+- DOMAIN-SUFFIX,wallet.apple.com,🎯 全球直连
+- DOMAIN-SUFFIX,api.apple-pay.com,🎯 全球直连
+- DOMAIN-SUFFIX,c-apple-pay.apple.com,🎯 全球直连
+- DOMAIN-SUFFIX,smoot.apple.com,🎯 全球直连
+- DOMAIN-KEYWORD,apple-pay,🎯 全球直连
 - GEOSITE,microsoft@cn,Ⓜ️ 微软中国
 - DOMAIN-KEYWORD,filen,📁 文件传输
 - DOMAIN-SUFFIX,drive.google.com,📁 文件传输
