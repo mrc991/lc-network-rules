@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1290 条，前置：58 条，合计：1348 条
+# 订阅：1297 条，前置：58 条，合计：1355 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -349,6 +349,7 @@ rules:
 - DOMAIN-SUFFIX,204cloud.com,🎯 全球直连
 - DOMAIN-SUFFIX,225284.xyz,🎯 全球直连
 - DOMAIN-SUFFIX,25mao.com,🎯 全球直连
+- DOMAIN-SUFFIX,264788.xyz,🎯 全球直连
 - DOMAIN-SUFFIX,2mcnxs.cc,🎯 全球直连
 - DOMAIN-SUFFIX,365ting.com,🎯 全球直连
 - DOMAIN-SUFFIX,365wp.top,🎯 全球直连
@@ -525,6 +526,7 @@ rules:
 - DOMAIN-SUFFIX,cgicop.com,🎯 全球直连
 - DOMAIN-SUFFIX,changjirb.com,🎯 全球直连
 - DOMAIN-SUFFIX,changzhi.top,🎯 全球直连
+- DOMAIN-SUFFIX,chatlabs.net,🎯 全球直连
 - DOMAIN-SUFFIX,chaxunjiao.com,🎯 全球直连
 - DOMAIN-SUFFIX,chaz.fun,🎯 全球直连
 - DOMAIN-SUFFIX,checkip.dyndns.org,🎯 全球直连
@@ -559,6 +561,7 @@ rules:
 - DOMAIN-SUFFIX,constantinefun.com,🎯 全球直连
 - DOMAIN-SUFFIX,constasj.me,🎯 全球直连
 - DOMAIN-SUFFIX,coros.com,🎯 全球直连
+- DOMAIN-SUFFIX,cqhy.fun,🎯 全球直连
 - DOMAIN-SUFFIX,cqjypg.com,🎯 全球直连
 - DOMAIN-SUFFIX,cqnbmarathon.com,🎯 全球直连
 - DOMAIN-SUFFIX,crrcgo.cc,🎯 全球直连
@@ -572,6 +575,7 @@ rules:
 - DOMAIN-SUFFIX,dadateach.com,🎯 全球直连
 - DOMAIN-SUFFIX,dahai96.com,🎯 全球直连
 - DOMAIN-SUFFIX,daocloud.vip,🎯 全球直连
+- DOMAIN-SUFFIX,darwinchow.com,🎯 全球直连
 - DOMAIN-SUFFIX,day.app,🎯 全球直连
 - DOMAIN-SUFFIX,dayilive.com,🎯 全球直连
 - DOMAIN-SUFFIX,dcgstd.com,🎯 全球直连
@@ -721,6 +725,7 @@ rules:
 - DOMAIN-SUFFIX,gootho.com,🎯 全球直连
 - DOMAIN-SUFFIX,gpetrip.com,🎯 全球直连
 - DOMAIN-SUFFIX,gpgwx.com,🎯 全球直连
+- DOMAIN-SUFFIX,greennet-inc.com,🎯 全球直连
 - DOMAIN-SUFFIX,grz-hx.com,🎯 全球直连
 - DOMAIN-SUFFIX,gseen.com,🎯 全球直连
 - DOMAIN-SUFFIX,gsgltz.com,🎯 全球直连
@@ -1167,6 +1172,7 @@ rules:
 - DOMAIN-SUFFIX,spst1.com,🎯 全球直连
 - DOMAIN-SUFFIX,sptv.ii00.cc,🎯 全球直连
 - DOMAIN-SUFFIX,ssjj2.com,🎯 全球直连
+- DOMAIN-SUFFIX,stargame.group,🎯 全球直连
 - DOMAIN-SUFFIX,starlink.uno,🎯 全球直连
 - DOMAIN-SUFFIX,startssl.com,🎯 全球直连
 - DOMAIN-SUFFIX,staticmeow.com,🎯 全球直连
@@ -1295,6 +1301,7 @@ rules:
 - DOMAIN-SUFFIX,wlups.com,🎯 全球直连
 - DOMAIN-SUFFIX,wologic.net,🎯 全球直连
 - DOMAIN-SUFFIX,wpurl.cc,🎯 全球直连
+- DOMAIN-SUFFIX,wt2zxk.com,🎯 全球直连
 - DOMAIN-SUFFIX,wty-yy.top,🎯 全球直连
 - DOMAIN-SUFFIX,wuhanjijin.com,🎯 全球直连
 - DOMAIN-SUFFIX,wwwh.eu.org,🎯 全球直连
