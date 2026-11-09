@@ -304,6 +304,8 @@ var LC_PREPEND_RULES = [
   "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT",
   "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT",
   "DOMAIN,homebistro.bigrich.cc,DIRECT",
+  "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择",
+  "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择",
   "DOMAIN-SUFFIX,apple-pay.com,DIRECT",
   "DOMAIN-SUFFIX,applepay.com,DIRECT",
   "DOMAIN-SUFFIX,applepaycash.cn,DIRECT",

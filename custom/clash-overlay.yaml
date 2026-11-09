@@ -42,6 +42,9 @@ ops:
       ; jsDelivr：cdn.jsdelivr.net 国内直连常被 RST，须在 Custom_Direct_Domain 之前走代理
       ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,jsdelivr.net
       ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,jsdelivr.com
+      ; 黄果短剧资源（切片与解密密钥域名被 SNI 阻断，须强制走代理）
+      ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,drleao.cn
+      ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,hzjvlo.cn
 
   # 上游 c73f931 已删除「谷歌在国内可用的域名直连」和
   # ruleset=🎯 全球直连,[]GEOSITE,google-cn。谷歌改由后面的

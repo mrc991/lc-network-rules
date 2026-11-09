@@ -36,6 +36,9 @@ prepend-rules:
   - "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"
   # HomeBistro：家里访问走直连（不经代理），让 Cloudflare 看到家庭公网出口，应用据此识别局域网
   - "DOMAIN,homebistro.bigrich.cc,DIRECT"
+  # 黄果短剧资源（切片与解密密钥域名被 SNI 阻断，须强制走代理）
+  - "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择"
+  - "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择"
   # Apple Pay / 钱包 / 银联：强制直连（防 Fake-IP 劫持与海外节点触发银行/银联风控）
   - "DOMAIN-SUFFIX,apple-pay.com,DIRECT"
   - "DOMAIN-SUFFIX,applepay.com,DIRECT"
