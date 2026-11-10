@@ -78,6 +78,8 @@ def test_clash_ini() -> None:
         "ruleset=🀄️ 优选地址,[]DOMAIN-SUFFIX,tailscale.com",
         "ruleset=🎯 全球直连,[]IP-CIDR,45.62.118.67/32,no-resolve",
         "ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,jsdelivr.net",
+        "ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,drleao.cn",
+        "ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,hzjvlo.cn",
         "ruleset=🎯 全球直连,[]GEOSITE,Tencent",
         "ruleset=🍎 App Store,[]DOMAIN-SUFFIX,apps.apple.com",
         "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,95516.com",
@@ -92,6 +94,9 @@ def test_clash_ini() -> None:
             _fail(f"Custom_Clash.ini missing: {m}")
     if "ruleset=🎯 全球直连,[]GEOIP,cn\n" in text + "\n":
         _fail("GEOIP,cn without no-resolve")
+    hk = next(ln for ln in lines if ln.startswith("custom_proxy_group=🇭🇰 香港节点`"))
+    if not hk.startswith("custom_proxy_group=🇭🇰 香港节点`select`") or "`url-test`" in hk:
+        _fail(f"HK group must be select: {hk[:120]}")
     # 顺序：个人前置规则在上游直连表之前；App Store 在苹果中国之前
     def pos(s: str) -> int:  # 只看 ruleset 行，注释里出现同名字符串不算
         return next(i for i, ln in enumerate(lines) if ln.startswith("ruleset=") and s in ln)
@@ -184,9 +189,12 @@ def test_shadowrocket_conf() -> None:
             _fail(f"IP rule without no-resolve (DNS leak): {ln}")
     for m in ("DOMAIN-SUFFIX,95516.com,🎯 全球直连", "PROCESS-NAME,AppStore,🍎 App Store",
               "🍎 App Store = select,🇺🇸 美国节点", "DOMAIN-SUFFIX,itunes.apple.com,🍎 App Store",
-              "DOMAIN-SUFFIX,jsdelivr.net,🚀 手动选择", "DOMAIN-SUFFIX,jsdelivr.com,🚀 手动选择"):
+              "DOMAIN-SUFFIX,jsdelivr.net,🚀 手动选择", "DOMAIN-SUFFIX,jsdelivr.com,🚀 手动选择",
+              "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择"):
         if m not in text:
             _fail(f"shadowrocket conf missing: {m}")
+    if "🇭🇰 香港节点 = select," not in text or "🇭🇰 香港节点 = url-test" in text:
+        _fail("shadowrocket HK group must be select")
     for bad in ("PROCESS-NAME,AppStore,🎯 全球直连", "DOMAIN-SUFFIX,apple.com,🍎 苹果中国",
                 "Apple/Apple.list,🍎 苹果中国", "DOMAIN-SUFFIX,jsdelivr.net,🎯 全球直连"):
         if bad in text:
@@ -245,7 +253,8 @@ def test_overwrites() -> None:
     for r in ("RULE-SET,lc-adblock-domain,REJECT", "RULE-SET,lc-adblock-ip,REJECT,no-resolve",
               "PROCESS-NAME,AnyDesk,DIRECT", "PROCESS-NAME,AnyDesk.exe,DIRECT",
               "DOMAIN-SUFFIX,anydesk.com,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com,DIRECT",
-              "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"):
+              "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT",
+              "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择"):
         if r not in rules:
             _fail(f"Clash Mi prepend-rules missing {r}")
     import build_clashmi_yaml
@@ -266,6 +275,16 @@ def test_overwrites() -> None:
     js = (ROOT / "overwrite" / "Clash_Mi_Merge.js").read_text(encoding="utf-8")
     if js != build_clashmi_js.render():
         _fail("overwrite/Clash_Mi_Merge.js is stale; run scripts/build_clashmi_js.py")
+    # 前置规则同时出现在展开订阅里时，文件头必须按去重后的条数计，render 才能还原同一文件。
+    overlapped = list(rules[:2]) + ["DOMAIN-SUFFIX,example.test,🚀 手动选择", rules[0]]
+    rendered = build_clashmi_yaml.render(overlapped)
+    pre_n = int(re.search(r"前置：(\d+) 条", rendered).group(1))
+    again = build_clashmi_yaml.render((yaml.safe_load(rendered).get("rules") or [])[pre_n:])
+    if again != rendered:
+        _fail("Clash Mi YAML render is not idempotent when subscription repeats prepend rules")
+    counts = [int(n) for n in re.findall(r"(\d+) 条", next(ln for ln in rendered.splitlines() if ln.startswith("# 订阅：")))]
+    if counts[0] + counts[1] != counts[2]:
+        _fail(f"Clash Mi YAML header counts must add up: {counts}")
     filt = mi.get("dns", {}).get("fake-ip-filter") or []
     for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn", "+.smp-device.apple.com", "+.unionpay.com"):
         if r not in filt:
