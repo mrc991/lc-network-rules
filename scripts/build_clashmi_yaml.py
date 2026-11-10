@@ -54,7 +54,11 @@ def render(sub_rules: list[str]) -> str:
     doc = dict(src)
     doc["rules"] = rules
     body = yaml.safe_dump(doc, allow_unicode=True, sort_keys=False, width=1000)
-    return HEADER.format(sub_count=len(sub_rules), pre_count=len(pre), total=len(rules)) + body
+    # 「订阅」按去重后实际写入的条数计。同一条规则同时在 prepend-rules 和展开订阅里时
+    # （例如 drleao.cn / hzjvlo.cn）不会写两遍；若按去重前的条数计，剥掉前置再 render
+    # 会改文件头，CI 在 e2e 重建后误判 overwrite/Clash_Mi_Merge.yaml 过期。
+    kept = len(rules) - len(pre)
+    return HEADER.format(sub_count=kept, pre_count=len(pre), total=len(rules)) + body
 
 
 def current_sub_rules() -> list[str]:
