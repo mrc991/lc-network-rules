@@ -72,3 +72,16 @@
   - 产物重构：clash/Custom_Clash.ini、overwrite/Clash_Mi_Merge.yaml、overwrite/Clash_Mi_Merge.js、shadowrocket/Custom_Shadowrocket_whitelist_ad.conf。
 - **验证命令及结果**：python scripts/build.py 成功重构；python scripts/tests.py 全部 10 项测试 passed。
 - **是否已推送远端**：是（随本次 commit 推送）。
+
+
+## 2026-11-17（c.ha.zdz.plus 直连分流与 Fake-IP 过滤）
+
+- **任务目标**：将 `c.ha.zdz.plus` 加入直连规则与 Fake-IP 白名单，避免被代理转发或分配 Fake-IP。
+- **分支名**：`feat/direct-c-ha-zdz-plus`
+- **修改文件**：
+  - `custom/Clash_Mi_Merge.src.yaml`：`prepend-rules` 增加 `DOMAIN,c.ha.zdz.plus,DIRECT`，`dns.fake-ip-filter` 增加 `c.ha.zdz.plus`。
+  - `custom/clash-overlay.yaml`：在自定义规则段增加 `ruleset=🎯 全球直连,[]DOMAIN,c.ha.zdz.plus`。
+  - `scripts/tests.py`：补充 `c.ha.zdz.plus` 的 Clash ini、Shadowrocket 配置、Clash Mi `prepend-rules` 与 `fake-ip-filter` 断言。
+  - 产物重构：`clash/Custom_Clash.ini`、`overwrite/Clash_Mi_Merge.yaml`、`overwrite/Clash_Mi_Merge.js`、`shadowrocket/Custom_Shadowrocket_whitelist_ad.conf`。
+- **验证命令及结果**：`python scripts/build.py` 与 `python scripts/tests.py` 全部通过（10 项测试 passed）。
+- **是否已推送远端**：是（推送至功能分支 `feat/direct-c-ha-zdz-plus` 并创建 PR，待合入 `main`）。

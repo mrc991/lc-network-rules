@@ -119,6 +119,7 @@ ops:
       ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,anydesk.com.cn
       ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,net.anydesk.com.cn
       ruleset=🎯 全球直连,[]DOMAIN-KEYWORD,blueair
+      ruleset=🎯 全球直连,[]DOMAIN,c.ha.zdz.plus
       ruleset=🇭🇰 香港节点,[]DOMAIN-KEYWORD,qzymetc
       ruleset=📈 Crypto,[]GEOSITE,category-cryptocurrency
       ruleset=🎯 全球直连,[]IP-CIDR,47.246.0.0/16,no-resolve

@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1427 条，前置：60 条，合计：1487 条
+# 订阅：1427 条，前置：61 条，合计：1488 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -85,6 +85,7 @@ dns:
   - +.net.anydesk.com
   - +.anydesk.com.cn
   - +.net.anydesk.com.cn
+  - c.ha.zdz.plus
   - localhost
   - WORKGROUP
   - +.lan
@@ -280,6 +281,7 @@ rules:
 - DOMAIN-SUFFIX,anydesk.com.cn,DIRECT
 - DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT
 - DOMAIN,homebistro.bigrich.cc,DIRECT
+- DOMAIN,c.ha.zdz.plus,DIRECT
 - DOMAIN-SUFFIX,drleao.cn,🚀 手动选择
 - DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择
 - DOMAIN-SUFFIX,apple-pay.com,DIRECT

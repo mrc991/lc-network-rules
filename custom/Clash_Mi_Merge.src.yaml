@@ -36,6 +36,8 @@ prepend-rules:
   - "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT"
   # HomeBistro：家里访问走直连（不经代理），让 Cloudflare 看到家庭公网出口，应用据此识别局域网
   - "DOMAIN,homebistro.bigrich.cc,DIRECT"
+  # c.ha.zdz.plus：直连（不走代理）
+  - "DOMAIN,c.ha.zdz.plus,DIRECT"
   # 黄果短剧资源（切片与解密密钥域名被 SNI 阻断，须强制走代理）
   - "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择"
   - "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择"
@@ -174,6 +176,8 @@ dns:
     - '+.net.anydesk.com'
     - '+.anydesk.com.cn'
     - '+.net.anydesk.com.cn'
+    # c.ha.zdz.plus（真实 IP 解析，避免 Fake-IP）
+    - c.ha.zdz.plus
     - 'localhost'
     - 'WORKGROUP'
     - '+.lan'
