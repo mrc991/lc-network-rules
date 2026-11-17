@@ -84,6 +84,7 @@ def test_clash_ini() -> None:
         "ruleset=🍎 App Store,[]DOMAIN-SUFFIX,apps.apple.com",
         "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,95516.com",
         "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,synology.com",
+        "ruleset=🎯 全球直连,[]DOMAIN,c.ha.zdz.plus",
         "ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,bigrich.cc",
         "ruleset=🐟 漏网之鱼,[]FINAL",
         "enable_rule_generator=true",
@@ -190,7 +191,8 @@ def test_shadowrocket_conf() -> None:
     for m in ("DOMAIN-SUFFIX,95516.com,🎯 全球直连", "PROCESS-NAME,AppStore,🍎 App Store",
               "🍎 App Store = select,🇺🇸 美国节点", "DOMAIN-SUFFIX,itunes.apple.com,🍎 App Store",
               "DOMAIN-SUFFIX,jsdelivr.net,🚀 手动选择", "DOMAIN-SUFFIX,jsdelivr.com,🚀 手动选择",
-              "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择"):
+              "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择",
+              "DOMAIN,c.ha.zdz.plus,🎯 全球直连"):
         if m not in text:
             _fail(f"shadowrocket conf missing: {m}")
     if "🇭🇰 香港节点 = select," not in text or "🇭🇰 香港节点 = url-test" in text:
@@ -254,6 +256,7 @@ def test_overwrites() -> None:
               "PROCESS-NAME,AnyDesk,DIRECT", "PROCESS-NAME,AnyDesk.exe,DIRECT",
               "DOMAIN-SUFFIX,anydesk.com,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com,DIRECT",
               "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT",
+              "DOMAIN,c.ha.zdz.plus,DIRECT",
               "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择"):
         if r not in rules:
             _fail(f"Clash Mi prepend-rules missing {r}")
@@ -286,7 +289,7 @@ def test_overwrites() -> None:
     if counts[0] + counts[1] != counts[2]:
         _fail(f"Clash Mi YAML header counts must add up: {counts}")
     filt = mi.get("dns", {}).get("fake-ip-filter") or []
-    for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn", "+.smp-device.apple.com", "+.unionpay.com"):
+    for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn", "c.ha.zdz.plus", "+.smp-device.apple.com", "+.unionpay.com"):
         if r not in filt:
             _fail(f"Clash Mi fake-ip-filter missing {r}")
     sniff_skip = mi.get("sniffer", {}).get("skip-domain") or []
