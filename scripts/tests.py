@@ -95,9 +95,10 @@ def test_clash_ini() -> None:
             _fail(f"Custom_Clash.ini missing: {m}")
     if "ruleset=🎯 全球直连,[]GEOIP,cn\n" in text + "\n":
         _fail("GEOIP,cn without no-resolve")
-    hk = next(ln for ln in lines if ln.startswith("custom_proxy_group=🇭🇰 香港节点`"))
-    if not hk.startswith("custom_proxy_group=🇭🇰 香港节点`select`") or "`url-test`" in hk:
-        _fail(f"HK group must be select: {hk[:120]}")
+    for name in ("🇭🇰 香港节点", "🇺🇸 美国节点"):
+        grp = next(ln for ln in lines if ln.startswith(f"custom_proxy_group={name}`"))
+        if not grp.startswith(f"custom_proxy_group={name}`select`") or "`url-test`" in grp:
+            _fail(f"{name} group must be select: {grp[:120]}")
     # 顺序：个人前置规则在上游直连表之前；App Store 在苹果中国之前
     def pos(s: str) -> int:  # 只看 ruleset 行，注释里出现同名字符串不算
         return next(i for i, ln in enumerate(lines) if ln.startswith("ruleset=") and s in ln)
@@ -195,8 +196,9 @@ def test_shadowrocket_conf() -> None:
               "DOMAIN,c.ha.zdz.plus,🎯 全球直连"):
         if m not in text:
             _fail(f"shadowrocket conf missing: {m}")
-    if "🇭🇰 香港节点 = select," not in text or "🇭🇰 香港节点 = url-test" in text:
-        _fail("shadowrocket HK group must be select")
+    for name in ("🇭🇰 香港节点", "🇺🇸 美国节点"):
+        if f"{name} = select," not in text or f"{name} = url-test" in text:
+            _fail(f"shadowrocket {name} group must be select")
     for bad in ("PROCESS-NAME,AppStore,🎯 全球直连", "DOMAIN-SUFFIX,apple.com,🍎 苹果中国",
                 "Apple/Apple.list,🍎 苹果中国", "DOMAIN-SUFFIX,jsdelivr.net,🎯 全球直连"):
         if bad in text:
