@@ -85,3 +85,14 @@
   - 产物重构：`clash/Custom_Clash.ini`、`overwrite/Clash_Mi_Merge.yaml`、`overwrite/Clash_Mi_Merge.js`、`shadowrocket/Custom_Shadowrocket_whitelist_ad.conf`。
 - **验证命令及结果**：`python scripts/build.py` 与 `python scripts/tests.py` 全部通过（10 项测试 passed）。
 - **是否已推送远端**：是（推送至功能分支 `feat/direct-c-ha-zdz-plus` 并创建 PR，待合入 `main`）。
+
+## 2026-11-17（美国节点改为 select）
+
+- **任务目标**：将分流策略组中的「🇺🇸 美国节点」由 `url-test` 改为 `select`（与「🇭🇰 香港节点」一致）。
+- **分支名**：`feat/us-group-select`
+- **修改文件**：
+  - `custom/proxy_groups.ini`：`🇺🇸 美国节点` 由 `url-test` 改为 `select`，去掉测速 URL 与间隔参数。
+  - `scripts/tests.py`：在 Clash ini 与 Shadowrocket 断言中补充 `🇺🇸 美国节点` 必须为 `select` 且不含 `url-test`。
+  - 产物重构：`clash/Custom_Clash.ini`、`shadowrocket/Custom_Shadowrocket_whitelist_ad.conf` 等生成产物。
+- **验证命令及结果**：`python scripts/build.py` 与 `python scripts/tests.py` 全部通过（10 项测试 passed）。
+- **是否已推送远端**：是（推送至功能分支 `feat/us-group-select` 并创建 PR）。
