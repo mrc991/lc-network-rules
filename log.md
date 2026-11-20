@@ -96,3 +96,18 @@
   - 产物重构：`clash/Custom_Clash.ini`、`shadowrocket/Custom_Shadowrocket_whitelist_ad.conf` 等生成产物。
 - **验证命令及结果**：`python scripts/build.py` 与 `python scripts/tests.py` 全部通过（10 项测试 passed）。
 - **是否已推送远端**：是（推送至功能分支 `feat/us-group-select` 并创建 PR）。
+
+## 2026-11-20（awswaf.com 加入 Crypto 分流）
+
+- **任务目标**：将 `DOMAIN-SUFFIX,awswaf.com,📈 Crypto` 加入 Clash 分流与覆写规则。
+- **分支名**：`feat/crypto-awswaf`
+- **修改文件**：
+  - `custom/clash-overlay.yaml`：在 `ruleset=📈 Crypto,[]GEOSITE,category-cryptocurrency` 后新增 `ruleset=📈 Crypto,[]DOMAIN-SUFFIX,awswaf.com`。
+  - `custom/Clash_Mi_Merge.src.yaml`：`prepend-rules`（广告拦截 `RULE-SET` 之前）新增 `DOMAIN-SUFFIX,awswaf.com,📈 Crypto`；不加入 `dns.fake-ip-filter`。
+  - `scripts/tests.py`：在 `test_clash_ini`、`test_shadowrocket_conf`、`test_overwrites` 补充 `awswaf.com` → `📈 Crypto` 断言。
+  - 产物重构：`clash/Custom_Clash.ini`、`overwrite/Clash_Mi_Merge.yaml`、`overwrite/Clash_Mi_Merge.js`、`shadowrocket/Custom_Shadowrocket_whitelist_ad.conf`。
+- **改动内容与原因**：使 `awswaf.com` 及其子域名在 Clash Mi、订阅模板（`Custom_Clash.ini`）与 Shadowrocket 中均命中 `📈 Crypto` 策略组（而非走直连或漏网之鱼）。
+- **验证命令及结果**：`python3 scripts/build.py` 成功构建；`python3 scripts/tests.py` 全部 10 项测试通过（`tests: all passed`）；`git diff --check` 无异常；已校验生成物中规则存在性、前置顺序、无重复与未加入 `fake-ip-filter`。
+- **是否已推送远端**：随本分支提交推送至 `feat/crypto-awswaf` 并创建 PR。
+- **跨仓库联动影响**：无（Shadowrocket 产物已由同仓 `build.py` 同步生成）。
+- **可迁移经验**：无

@@ -85,6 +85,7 @@ def test_clash_ini() -> None:
         "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,95516.com",
         "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,synology.com",
         "ruleset=🎯 全球直连,[]DOMAIN,c.ha.zdz.plus",
+        "ruleset=📈 Crypto,[]DOMAIN-SUFFIX,awswaf.com",
         "ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,bigrich.cc",
         "ruleset=🐟 漏网之鱼,[]FINAL",
         "enable_rule_generator=true",
@@ -193,7 +194,7 @@ def test_shadowrocket_conf() -> None:
               "🍎 App Store = select,🇺🇸 美国节点", "DOMAIN-SUFFIX,itunes.apple.com,🍎 App Store",
               "DOMAIN-SUFFIX,jsdelivr.net,🚀 手动选择", "DOMAIN-SUFFIX,jsdelivr.com,🚀 手动选择",
               "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择",
-              "DOMAIN,c.ha.zdz.plus,🎯 全球直连"):
+              "DOMAIN,c.ha.zdz.plus,🎯 全球直连", "DOMAIN-SUFFIX,awswaf.com,📈 Crypto"):
         if m not in text:
             _fail(f"shadowrocket conf missing: {m}")
     for name in ("🇭🇰 香港节点", "🇺🇸 美国节点"):
@@ -259,7 +260,8 @@ def test_overwrites() -> None:
               "DOMAIN-SUFFIX,anydesk.com,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com,DIRECT",
               "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT",
               "DOMAIN,c.ha.zdz.plus,DIRECT",
-              "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择"):
+              "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择",
+              "DOMAIN-SUFFIX,awswaf.com,📈 Crypto"):
         if r not in rules:
             _fail(f"Clash Mi prepend-rules missing {r}")
     import build_clashmi_yaml
