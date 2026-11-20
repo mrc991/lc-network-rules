@@ -41,6 +41,8 @@ prepend-rules:
   # 黄果短剧资源（切片与解密密钥域名被 SNI 阻断，须强制走代理）
   - "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择"
   - "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择"
+  # AWS WAF（Crypto 交易所人机校验，走 Crypto 代理分组）
+  - "DOMAIN-SUFFIX,awswaf.com,📈 Crypto"
   # Apple Pay / 钱包 / 银联：强制直连（防 Fake-IP 劫持与海外节点触发银行/银联风控）
   - "DOMAIN-SUFFIX,apple-pay.com,DIRECT"
   - "DOMAIN-SUFFIX,applepay.com,DIRECT"

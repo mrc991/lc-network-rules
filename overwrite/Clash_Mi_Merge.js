@@ -308,6 +308,7 @@ var LC_PREPEND_RULES = [
   "DOMAIN,c.ha.zdz.plus,DIRECT",
   "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择",
   "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择",
+  "DOMAIN-SUFFIX,awswaf.com,📈 Crypto",
   "DOMAIN-SUFFIX,apple-pay.com,DIRECT",
   "DOMAIN-SUFFIX,applepay.com,DIRECT",
   "DOMAIN-SUFFIX,applepaycash.cn,DIRECT",
