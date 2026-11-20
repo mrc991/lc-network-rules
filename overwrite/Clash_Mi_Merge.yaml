@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1458 条，前置：61 条，合计：1519 条
+# 订阅：1452 条，前置：61 条，合计：1513 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -477,7 +477,6 @@ rules:
 - DOMAIN-SUFFIX,aocdisplays.com,🎯 全球直连
 - DOMAIN-SUFFIX,aoxox.com,🎯 全球直连
 - DOMAIN-SUFFIX,ap-leasing.com,🎯 全球直连
-- DOMAIN-SUFFIX,api.myip.com,🎯 全球直连
 - DOMAIN-SUFFIX,apm-log-upload-os.hoyoverse.com,🎯 全球直连
 - DOMAIN-SUFFIX,appracle.com,🎯 全球直连
 - DOMAIN-SUFFIX,aqtwwx.net,🎯 全球直连
@@ -562,8 +561,6 @@ rules:
 - DOMAIN-SUFFIX,chatlabs.net,🎯 全球直连
 - DOMAIN-SUFFIX,chaxunjiao.com,🎯 全球直连
 - DOMAIN-SUFFIX,chaz.fun,🎯 全球直连
-- DOMAIN-SUFFIX,checkip.dyndns.org,🎯 全球直连
-- DOMAIN-SUFFIX,checkipv6.dyndns.org,🎯 全球直连
 - DOMAIN-SUFFIX,chengguodj.com,🎯 全球直连
 - DOMAIN-SUFFIX,chenyuxia.com,🎯 全球直连
 - DOMAIN-SUFFIX,cheriexsky.love,🎯 全球直连
@@ -763,7 +760,6 @@ rules:
 - DOMAIN-SUFFIX,github.moeyy.xyz,🎯 全球直连
 - DOMAIN-SUFFIX,github.site,🎯 全球直连
 - DOMAIN-SUFFIX,github.store,🎯 全球直连
-- DOMAIN-SUFFIX,giveup.top,🎯 全球直连
 - DOMAIN-SUFFIX,gjjwgp3n.com,🎯 全球直连
 - DOMAIN-SUFFIX,gjtool.com,🎯 全球直连
 - DOMAIN-SUFFIX,gmoj.net,🎯 全球直连
@@ -895,7 +891,6 @@ rules:
 - DOMAIN-SUFFIX,idphotoplus.com,🎯 全球直连
 - DOMAIN-SUFFIX,idsduf.com,🎯 全球直连
 - DOMAIN-SUFFIX,ifawj9hvvl.com,🎯 全球直连
-- DOMAIN-SUFFIX,ifconfig.co,🎯 全球直连
 - DOMAIN-SUFFIX,ifengmap.com,🎯 全球直连
 - DOMAIN-SUFFIX,ifish7.com,🎯 全球直连
 - DOMAIN-SUFFIX,iflytck.com,🎯 全球直连
@@ -917,8 +912,6 @@ rules:
 - DOMAIN-SUFFIX,iotrix.net,🎯 全球直连
 - DOMAIN-SUFFIX,ip.plus,🎯 全球直连
 - DOMAIN-SUFFIX,ip159.com,🎯 全球直连
-- DOMAIN-SUFFIX,ip6.seeip.org,🎯 全球直连
-- DOMAIN-SUFFIX,ipapi.co,🎯 全球直连
 - DOMAIN-SUFFIX,ipjrh.com,🎯 全球直连
 - DOMAIN-SUFFIX,iposl.com,🎯 全球直连
 - DOMAIN-SUFFIX,ipshu.com,🎯 全球直连
@@ -978,7 +971,6 @@ rules:
 - DOMAIN-SUFFIX,kelexuexi.com,🎯 全球直连
 - DOMAIN-SUFFIX,keyoo.com,🎯 全球直连
 - DOMAIN-SUFFIX,kgithub.com,🎯 全球直连
-- DOMAIN-SUFFIX,kit327.com,🎯 全球直连
 - DOMAIN-SUFFIX,kiwiot.com,🎯 全球直连
 - DOMAIN-SUFFIX,kke.com.hk,🎯 全球直连
 - DOMAIN-SUFFIX,kkmmy.com,🎯 全球直连
@@ -1546,6 +1538,7 @@ rules:
 - DOMAIN-SUFFIX,yrqvlchq5.com,🎯 全球直连
 - DOMAIN-SUFFIX,yshoufa.com,🎯 全球直连
 - DOMAIN-SUFFIX,yueti.vip,🎯 全球直连
+- DOMAIN-SUFFIX,yueyouqu.com,🎯 全球直连
 - DOMAIN-SUFFIX,yunqin.online,🎯 全球直连
 - DOMAIN-SUFFIX,yunzuoye.net,🎯 全球直连
 - DOMAIN-SUFFIX,yydsys.de,🎯 全球直连
@@ -1578,6 +1571,7 @@ rules:
 - DOMAIN-SUFFIX,zllinks.com,🎯 全球直连
 - DOMAIN-SUFFIX,zmaticoo.com,🎯 全球直连
 - DOMAIN-SUFFIX,zmis.me,🎯 全球直连
+- DOMAIN-SUFFIX,znigddzwz.cc,🎯 全球直连
 - DOMAIN-SUFFIX,znnu.com,🎯 全球直连
 - DOMAIN-SUFFIX,znztv.com,🎯 全球直连
 - DOMAIN-SUFFIX,zqin758.xyz,🎯 全球直连
