@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1452 条，前置：62 条，合计：1514 条
+# 订阅：1454 条，前置：62 条，合计：1516 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -886,6 +886,7 @@ rules:
 - DOMAIN-SUFFIX,ibnjl.shop,🎯 全球直连
 - DOMAIN-SUFFIX,ibwm5lynb6.com,🎯 全球直连
 - DOMAIN-SUFFIX,ichongjiayuan.com,🎯 全球直连
+- DOMAIN-SUFFIX,icitycdn.com,🎯 全球直连
 - DOMAIN-SUFFIX,icvcs.com,🎯 全球直连
 - DOMAIN-SUFFIX,idazhe.net,🎯 全球直连
 - DOMAIN-SUFFIX,idc.cash,🎯 全球直连
@@ -1416,6 +1417,7 @@ rules:
 - DOMAIN-SUFFIX,warmheart.top,🎯 全球直连
 - DOMAIN-SUFFIX,wawo.cc,🎯 全球直连
 - DOMAIN-SUFFIX,we-stats.com,🎯 全球直连
+- DOMAIN-SUFFIX,webportal.top,🎯 全球直连
 - DOMAIN-SUFFIX,webs.vc,🎯 全球直连
 - DOMAIN-SUFFIX,weiguangshanyao.com,🎯 全球直连
 - DOMAIN-SUFFIX,weixinpcs.com,🎯 全球直连
