@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1477 条，前置：62 条，合计：1539 条
+# 订阅：1485 条，前置：62 条，合计：1547 条
 rule-providers:
   lc-adblock-domain:
     type: http
@@ -403,7 +403,9 @@ rules:
 - DOMAIN-SUFFIX,66990000.xyz,🎯 全球直连
 - DOMAIN-SUFFIX,6apzfdx.com,🎯 全球直连
 - DOMAIN-SUFFIX,6v520.net,🎯 全球直连
+- DOMAIN-SUFFIX,6z2h1lycfw.cc,🎯 全球直连
 - DOMAIN-SUFFIX,71.am,🎯 全球直连
+- DOMAIN-SUFFIX,7189099.com,🎯 全球直连
 - DOMAIN-SUFFIX,737698.xyz,🎯 全球直连
 - DOMAIN-SUFFIX,757abc.com,🎯 全球直连
 - DOMAIN-SUFFIX,77505113.com,🎯 全球直连
@@ -790,6 +792,7 @@ rules:
 - DOMAIN-SUFFIX,gseen.com,🎯 全球直连
 - DOMAIN-SUFFIX,gsgltz.com,🎯 全球直连
 - DOMAIN-SUFFIX,gsjkjt.com,🎯 全球直连
+- DOMAIN-SUFFIX,gslock.com,🎯 全球直连
 - DOMAIN-SUFFIX,gsnhcg.com,🎯 全球直连
 - DOMAIN-SUFFIX,gsstic.com,🎯 全球直连
 - DOMAIN-SUFFIX,gta5max.com,🎯 全球直连
@@ -944,6 +947,7 @@ rules:
 - DOMAIN-SUFFIX,jfyxw.com,🎯 全球直连
 - DOMAIN-SUFFIX,jh96095.com,🎯 全球直连
 - DOMAIN-SUFFIX,jiangningwater.com,🎯 全球直连
+- DOMAIN-SUFFIX,jiangyuxj.com,🎯 全球直连
 - DOMAIN-SUFFIX,jianzhixiaoke.net,🎯 全球直连
 - DOMAIN-SUFFIX,jiaoyanyun.com,🎯 全球直连
 - DOMAIN-SUFFIX,jieyoutsg.com,🎯 全球直连
@@ -1037,6 +1041,7 @@ rules:
 - DOMAIN-SUFFIX,lsposed.zip,🎯 全球直连
 - DOMAIN-SUFFIX,lty02.com,🎯 全球直连
 - DOMAIN-SUFFIX,lucky.gd,🎯 全球直连
+- DOMAIN-SUFFIX,lujiangct.top,🎯 全球直连
 - DOMAIN-SUFFIX,luxiangwu.com,🎯 全球直连
 - DOMAIN-SUFFIX,lw5.co,🎯 全球直连
 - DOMAIN-SUFFIX,lx51ib3szv.cc,🎯 全球直连
@@ -1086,6 +1091,7 @@ rules:
 - DOMAIN-SUFFIX,minekuai.com,🎯 全球直连
 - DOMAIN-SUFFIX,minor-api-os.hoyoverse.com,🎯 全球直连
 - DOMAIN-SUFFIX,miraiemby.com,🎯 全球直连
+- DOMAIN-SUFFIX,misoso.cc,🎯 全球直连
 - DOMAIN-SUFFIX,mixly.org,🎯 全球直连
 - DOMAIN-SUFFIX,mobai.sbs,🎯 全球直连
 - DOMAIN-SUFFIX,mobbananagame.com,🎯 全球直连
@@ -1167,6 +1173,7 @@ rules:
 - DOMAIN-SUFFIX,paijitang.com,🎯 全球直连
 - DOMAIN-SUFFIX,pailedi.com,🎯 全球直连
 - DOMAIN-SUFFIX,panjue.com,🎯 全球直连
+- DOMAIN-SUFFIX,panso.vip,🎯 全球直连
 - DOMAIN-SUFFIX,paojiaoyun.com,🎯 全球直连
 - DOMAIN-SUFFIX,paperang.com,🎯 全球直连
 - DOMAIN-SUFFIX,passnat.com,🎯 全球直连
@@ -1458,6 +1465,7 @@ rules:
 - DOMAIN-SUFFIX,woca.fun,🎯 全球直连
 - DOMAIN-SUFFIX,wologic.net,🎯 全球直连
 - DOMAIN-SUFFIX,wpurl.cc,🎯 全球直连
+- DOMAIN-SUFFIX,wpys.cc,🎯 全球直连
 - DOMAIN-SUFFIX,wshifen.com,🎯 全球直连
 - DOMAIN-SUFFIX,wt2zxk.com,🎯 全球直连
 - DOMAIN-SUFFIX,wty-yy.top,🎯 全球直连
