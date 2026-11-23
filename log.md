@@ -111,3 +111,15 @@
 - **是否已推送远端**：随本分支提交推送至 `feat/crypto-awswaf` 并创建 PR。
 - **跨仓库联动影响**：无（Shadowrocket 产物已由同仓 `build.py` 同步生成）。
 - **可迁移经验**：无
+
+
+## 2026-11-23（新增自建节点自动测速组 `🏠 自建节点`）
+
+- 任务目标：在 Clash 模板中新增 `🏠 自建节点` 自动测速组（`url-test`），仅包含 BWG 3 个、SJ 3 个、CC 3 个共 9 个自建节点，排在 `🔀 非标端口` 之后、`🇭🇰 香港节点` 之前，供 HomeBistro 日历推送等需绕开机场 22 端口限制的场景全自动选路。
+- 分支名：`feat/self-hosted-proxy-group`（快进合入 `main`）。
+- 修改文件：`custom/proxy_groups.ini`、`log.md`（追加本节）。
+- 改动内容与原因：在 `custom/proxy_groups.ini` 中 `🔀 非标端口` 与 `🇭🇰 香港节点` 之间新增 `custom_proxy_group=🏠 自建节点`（`url-test`，正则 `(bwg|BWG|\brn\b|\bRN\b|gabriel|Gabriel)`，测速地址 `https://cp.cloudflare.com/generate_204`，间隔 300s，容差 50ms）。
+- 验证命令及结果：推送至 `origin/main` 触发 `build.yml` 全套校验（`tests.py` + `check_urls.py` + `e2e_clash.sh` + `mihomo -t`）并同步刷新 MT6000 OpenClash 订阅核验 9 个节点全命中且无误命中。
+- 是否已推送远端：是（`feat/self-hosted-proxy-group` 与 `main`）。
+- 跨仓库联动影响：MT6000 `/etc/openclash/custom/openclash_custom_rules.list` 中 HomeBistro 的 SCP 代理规则目标由单节点 `🇺🇸 US SJ rn HY2` 改为 `🏠 自建节点`。
+- 可迁移经验：[Cue: 需要对 SSH/22 端口做自动测速容灾且同时订阅了机场节点] -> [Lesson: 机场共享节点常封禁或限流 22 端口导致全量 `url-test` 选出不可用节点，应单独设立仅匹配自建节点的 `url-test` 组]
