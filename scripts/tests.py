@@ -76,7 +76,6 @@ def test_clash_ini() -> None:
         "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,synology.com",
         "ruleset=🎯 全球直连,[]DOMAIN,c.ha.zdz.plus",
         "ruleset=🎯 全球直连,[]DOMAIN,homebistro.bigrich.cc",
-        "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,argotunnel.com",
         "ruleset=📈 Crypto,[]DOMAIN-SUFFIX,awswaf.com",
         "ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,bigrich.cc",
         "ruleset=🐟 漏网之鱼,[]FINAL",
