@@ -9,7 +9,6 @@ LC 个人分流规则。上游原版 + 本仓库定制，由 GitHub Actions 每�
 | Clash 订阅转换模板（节点分流） | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/clash/Custom_Clash.ini` |
 | Clash Mi 覆写（YAML，客户端用这个，含完整 rules） | `https://raw.githubusercontent.com/mrc991/lc-network-rules/main/overwrite/Clash_Mi_Merge.yaml` |
 | Clash Mi JS 覆写（备用，一般不用） | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/Clash_Mi_Merge.js` |
-| OpenClash 覆写模块 LC_AdBlock | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/LC_AdBlock.conf` |
 | OpenClash 覆写模块 LC_AnyDesk | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/LC_AnyDesk.conf` |
 | Shadowrocket 配置（带广告拦截） | `https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/shadowrocket/Custom_Shadowrocket_whitelist_ad.conf` |
 
@@ -27,10 +26,8 @@ custom/                  定制（手改这里）
 overwrite/
   Clash_Mi_Merge.yaml    Clash Mi 覆写（生成：前置规则 + 展开后的完整订阅规则，scripts/build_clashmi_yaml.py）
   Clash_Mi_Merge.js      Clash Mi 备用 JS 覆写（生成，scripts/build_clashmi_js.py）
-  LC_AdBlock.conf        OpenClash 覆写模块（手改）
   LC_AnyDesk.conf        OpenClash AnyDesk 域名直连覆写（手改）
   openclash_fake_filter_anydesk.snippet  路由 fake-ip-filter 片段（手改）
-  adblock/               广告 rule-provider（生成）
 clash/                   Custom_Clash.ini（生成）
 shadowrocket/            Shadowrocket 配置（生成）
 upstream.lock            本次产物使用的上游 commit（生成）
@@ -80,7 +77,7 @@ python scripts/build.py && python scripts/tests.py
 1. 「覆写」页：找到远程覆写 `.../overwrite/Clash_Mi_Merge.yaml`（地址用 raw.githubusercontent，见上表），点「更新」（不更新也会每 24 小时自动更新）。
 2. 「设置 → 核心设置 → 进程匹配模式」设为 `always`。
 3. 首页「重新连接」（会重建 TUN，断网几秒）。
-4. 检查：连接/规则里能看到 `RULE-SET,lc-adblock-domain,REJECT` 等前置规则排在最前；`AnyDesk` 进程命中 `ProcessName` → `DIRECT`。
+4. 检查：连接/规则里能看到 `AND,((NETWORK,udp),(DST-PORT,443)),REJECT` 等前置规则排在最前；`AnyDesk` 进程命中 `ProcessName` → `DIRECT`。
 
 回滚：GitHub 上 revert 本次提交（或把覆写换回旧版本），在 App 里更新覆写；进程匹配模式改回 `off`；再「重新连接」。临时救急可在 App 里取消该订阅的覆写后重新连接。
 - AnyDesk（Clash Mi）：在 `custom/Clash_Mi_Merge.src.yaml`：`PROCESS-NAME,AnyDesk` / `AnyDesk.exe` 与四个 `DOMAIN-SUFFIX` 都走 `DIRECT`，并写入 `dns.fake-ip-filter`。`find-process-mode` 为 `always`，否则进程规则不生效。域名规则盖不住打洞用的裸 IP。

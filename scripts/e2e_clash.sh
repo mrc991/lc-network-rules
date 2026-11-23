@@ -109,7 +109,7 @@ if fresh:
 assert cfg["proxies"] == sub["proxies"], "proxies changed by overwrite"
 assert cfg["proxy-groups"] == sub["proxy-groups"], "proxy-groups changed by overwrite"
 assert cfg.get("find-process-mode") == "always", "find-process-mode not always"
-for name in src["rule-providers"]:
+for name in (src.get("rule-providers") or {}):
     assert name in cfg.get("rule-providers", {}), f"rule-provider {name} missing"
 
 groups = {g["name"] for g in cfg["proxy-groups"]} | {"DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE"}
@@ -151,7 +151,7 @@ cfg = json.load(open(sys.argv[2], encoding="utf-8"))
 pre = mi["prepend-rules"]
 assert cfg["rules"][:len(pre)] == pre, "JS overwrite did not prepend rules"
 assert cfg.get("find-process-mode") == "always", "find-process-mode not always after JS overwrite"
-for name in mi["rule-providers"]:
+for name in (mi.get("rule-providers") or {}):
     assert name in cfg.get("rule-providers", {}), f"rule-provider {name} missing after JS overwrite"
 assert "prepend-rules" not in cfg, "prepend-rules key leaked into final config"
 yaml.safe_dump(cfg, open(sys.argv[3], "w", encoding="utf-8"), allow_unicode=True, sort_keys=False)

@@ -20,16 +20,6 @@ import sr_base as base  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 INI = ROOT / "clash" / "Custom_Clash.ini"
 SR = ROOT / "shadowrocket" / "Custom_Shadowrocket_whitelist_ad.conf"
-ADB_DOMAIN = ROOT / "overwrite" / "adblock" / "AdBlock_Domain.yaml"
-ADB_IP = ROOT / "overwrite" / "adblock" / "AdBlock_IP.yaml"
-REPO_CDN = "https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/"
-
-PROTECTED = [
-    "unionpay.com", "95516.com", "cloudpay.com.cn", "qq.com", "weixin.qq.com", "wechat.com",
-    "servicewechat.com", "tenpay.com", "alipay.com", "taobao.com", "tmall.com", "jd.com",
-    "apple.com", "icloud.com", "github.com", "google.com", "microsoft.com", "jsdelivr.net",
-    "tailscale.com", "bigrich.cc", "baidu.com", "aliyun.com", "openai.com", "anthropic.com",
-]
 
 FIXTURE_INI = """
 [custom]
@@ -85,6 +75,8 @@ def test_clash_ini() -> None:
         "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,95516.com",
         "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,synology.com",
         "ruleset=🎯 全球直连,[]DOMAIN,c.ha.zdz.plus",
+        "ruleset=🎯 全球直连,[]DOMAIN,homebistro.bigrich.cc",
+        "ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,argotunnel.com",
         "ruleset=📈 Crypto,[]DOMAIN-SUFFIX,awswaf.com",
         "ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,bigrich.cc",
         "ruleset=🐟 漏网之鱼,[]FINAL",
@@ -228,22 +220,6 @@ def test_shadowrocket_conf() -> None:
 
 # ---------- 覆写 ----------
 
-def test_adblock_providers() -> None:
-    domains = yaml.safe_load(ADB_DOMAIN.read_text(encoding="utf-8")).get("payload") or []
-    cidrs = yaml.safe_load(ADB_IP.read_text(encoding="utf-8")).get("payload") or []
-    if len(domains) < 20000 or len(set(domains)) != len(domains):
-        _fail(f"AdBlock_Domain.yaml count/dup wrong: {len(domains)}")
-    for d in domains:
-        if not isinstance(d, str) or "," in d or " " in d or d.startswith("*"):
-            _fail(f"AdBlock_Domain.yaml bad entry: {d!r}")
-    for c in cidrs:
-        ipaddress.ip_network(c, strict=False)
-    dset = set(domains)
-    hit = [p for p in PROTECTED if p in dset or "+." + p in dset]
-    if hit:
-        _fail(f"AdBlock would block protected domains: {hit}")
-
-
 def test_overwrites() -> None:
     mi = yaml.safe_load((ROOT / "custom" / "Clash_Mi_Merge.src.yaml").read_text(encoding="utf-8"))
     if mi["tun"]["strict-route"] is not False or mi["tun"]["stack"] != "system":
@@ -254,11 +230,17 @@ def test_overwrites() -> None:
         _fail("Clash Mi dns.fallback must be empty")
     if mi.get("find-process-mode") != "always":
         _fail("Clash Mi find-process-mode must be always so PROCESS-NAME rules hit")
+    if "rule-providers" in mi:
+        _fail("Clash Mi must not carry AdBlock rule-providers")
     rules = mi.get("prepend-rules") or []
-    for r in ("RULE-SET,lc-adblock-domain,REJECT", "RULE-SET,lc-adblock-ip,REJECT,no-resolve",
+    for bad in ("RULE-SET,lc-adblock-domain,REJECT", "RULE-SET,lc-adblock-ip,REJECT,no-resolve"):
+        if bad in rules:
+            _fail(f"Clash Mi prepend-rules must not carry removed AdBlock rule {bad}")
+    for r in ("AND,((NETWORK,udp),(DST-PORT,443)),REJECT",
               "PROCESS-NAME,AnyDesk,DIRECT", "PROCESS-NAME,AnyDesk.exe,DIRECT",
               "DOMAIN-SUFFIX,anydesk.com,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com,DIRECT",
               "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT", "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT",
+              "DOMAIN,homebistro.bigrich.cc,DIRECT", "DOMAIN-SUFFIX,argotunnel.com,DIRECT",
               "DOMAIN,c.ha.zdz.plus,DIRECT",
               "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择", "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择",
               "DOMAIN-SUFFIX,awswaf.com,📈 Crypto"):
@@ -293,28 +275,21 @@ def test_overwrites() -> None:
     if counts[0] + counts[1] != counts[2]:
         _fail(f"Clash Mi YAML header counts must add up: {counts}")
     filt = mi.get("dns", {}).get("fake-ip-filter") or []
-    for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn", "c.ha.zdz.plus", "+.smp-device.apple.com", "+.unionpay.com"):
+    for r in ("+.anydesk.com", "+.net.anydesk.com", "+.anydesk.com.cn", "+.net.anydesk.com.cn", "c.ha.zdz.plus", "+.smp-device.apple.com", "+.unionpay.com", "+.argotunnel.com", "+.quickconnect.to"):
         if r not in filt:
             _fail(f"Clash Mi fake-ip-filter missing {r}")
     sniff_skip = mi.get("sniffer", {}).get("skip-domain") or []
-    for s in ("+.apple.com", "+.push.apple.com", "+.unionpay.com"):
+    for s in ("+.apple.com", "+.push.apple.com", "+.unionpay.com", "+.oray.com", "+.sunlogin.net"):
         if s not in sniff_skip:
             _fail(f"Clash Mi sniffer skip-domain missing {s}")
-    oc_text = (ROOT / "overwrite" / "LC_AdBlock.conf").read_text(encoding="utf-8")
-    oc = yaml.safe_load(oc_text.split("[YAML]", 1)[1])
-    for doc in (mi, oc):
-        for name, prov in doc["rule-providers"].items():
-            if not prov["url"].startswith(REPO_CDN + "overwrite/adblock/"):
-                _fail(f"{name} url must point to this repo: {prov['url']}")
-            local = ROOT / prov["url"][len(REPO_CDN):]
-            if not local.is_file():
-                _fail(f"{name} url target missing in repo: {local.relative_to(ROOT)}")
+    if (ROOT / "overwrite" / "LC_AdBlock.conf").exists() or (ROOT / "overwrite" / "adblock").exists():
+        _fail("AdBlock files must be removed")
 
 
 def main() -> None:
     for fn in (test_overlay_anchor_guard, test_clash_ini, test_dns_helpers, test_priority_us_appstore_and_unionpay,
                test_overlay_order_appletv_then_appstore, test_list_name_mapping, test_rewrite_general_doh,
-               test_shadowrocket_conf, test_adblock_providers, test_overwrites):
+               test_shadowrocket_conf, test_overwrites):
         fn()
         print(f"ok  {fn.__name__}")
     print("tests: all passed")

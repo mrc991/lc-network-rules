@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-import build_adblock  # noqa: E402
 import build_clash  # noqa: E402
 import build_clashmi_js  # noqa: E402
 import build_clashmi_yaml  # noqa: E402
@@ -21,7 +20,6 @@ LOCK = upstream.ROOT / "upstream.lock"
 
 def main() -> None:
     clash_sha = build_clash.main()
-    build_adblock.main()
     build_clashmi_js.main()
     build_clashmi_yaml.refresh()  # 订阅规则由 e2e（CLASHMI_WRITE=1）用 subconverter 展开后重建
     js_sha = build_shadowrocket.main()

@@ -123,3 +123,22 @@
 - 是否已推送远端：是（`feat/self-hosted-proxy-group` 与 `main`）。
 - 跨仓库联动影响：MT6000 `/etc/openclash/custom/openclash_custom_rules.list` 中 HomeBistro 的 SCP 代理规则目标由单节点 `🇺🇸 US SJ rn HY2` 改为 `🏠 自建节点`。
 - 可迁移经验：[Cue: 需要对 SSH/22 端口做自动测速容灾且同时订阅了机场节点] -> [Lesson: 机场共享节点常封禁或限流 22 端口导致全量 `url-test` 选出不可用节点，应单独设立仅匹配自建节点的 `url-test` 组]
+
+
+## 2026-11-23（三台路由 Clash 全量对齐与移除 Clash 广告拦截板块）
+
+- **任务目标**：将 MT6000、ac86u-office、ac86u-tc 三台路由器与本仓库配置全面对齐（Fake-IP 白名单与 Sniffer 取四方并集、DNS 对齐 MT6000 稳定版架构、统一关闭 IPv6 与禁用 UDP/443 QUIC），并彻底移除 Clash 广告拦截板块（`LC_AdBlock` / `adblock/`）。
+- **分支名**：`feat/sync-routers-remove-adblock`（本地已提交，待确认后推送远端并更新 `.github/workflows/build.yml`）
+- **修改文件**：
+  - 仓库：`custom/Clash_Mi_Merge.src.yaml`、`custom/clash-overlay.yaml`、`scripts/build.py`、`scripts/tests.py`、`scripts/e2e_clash.sh`、`README.md`、`log.md`，产物 `clash/Custom_Clash.ini`、`overwrite/Clash_Mi_Merge.yaml`、`overwrite/Clash_Mi_Merge.js`、`shadowrocket/Custom_Shadowrocket_whitelist_ad.conf`；删除 `overwrite/LC_AdBlock.conf`、`overwrite/adblock/AdBlock_Domain.yaml`、`overwrite/adblock/AdBlock_IP.yaml`、`scripts/build_adblock.py`。
+  - 工作区同步：`9.tools/GitHub/lc-network-rules/README.md`、`9.tools/GitHub/lc-network-rules/log.md`、`9.tools/GitHub/lc-network-rules/overwrite/Clash_Mi_Merge.yaml`、`9.tools/infra/DEVICES.md`。
+- **改动内容与原因**：
+  - `custom/Clash_Mi_Merge.src.yaml`：移除 `lc-adblock-*` 前置规则与 `rule-providers`；补充 `argotunnel.com` 与 `198.41.192/200` 直连；DNS 对齐 MT6000 稳定版（`respect-rules: true`、国内 UDP + 海外 DoH `nameserver-policy`、`fallback: []`）；`fake-ip-filter` 合并四端并集共 217 条（统一 `+.`）；`sniffer.skip-domain` 合并四端并集共 11 条。
+  - `custom/clash-overlay.yaml`：补充 `homebistro.bigrich.cc`、`argotunnel.com`、`198.41.192.0/24`、`198.41.200.0/24` 直连。
+  - 三台路由实改：MT6000 保留原 DNS、移除 `LC_AdBlock`、同步 217 条 Fake-IP 与 11 条 Sniffer 并精简重复自定义规则；ac86u-office 与 ac86u-tc 同步 MT6000 同款 DNS（各自保留本地 WAN DNS）、217 条 Fake-IP、11 条 Sniffer、刷新 42 组订阅（含 `🏠 自建节点`）；ac86u-tc 额外关闭 IPv6 并补齐 `UDP/443 REJECT-DROP` 禁 QUIC。
+- **验证命令及结果**：
+  - 本地仓库：`python3 scripts/build.py` 与 `python3 scripts/tests.py` 全部 9 项通过（`tests: all passed`）。
+  - 三台路由：运行配置 `cc.yaml` / `AP_cc.yaml` 核验 `missing_from_GH=[]`、`missing_skip=[]`、`ipv6=False`、`respect-rules=True`、42 组含 `🏠 自建节点`、`adblock_rules=0`；两台 AC86U `clash -t` 均通过；三台实测 `smp-device.apple.com`、`boot.net.anydesk.com`、`c.ha.zdz.plus` 均返回真实 IP，`www.google.com` 均返回 `198.18.x.x` Fake-IP。
+- **是否已推送远端**：否（本地功能分支已提交，待 LC 确认后推送并同步清理 `.github/workflows/build.yml` 中两处 `adblock` 引用）。
+- **跨仓库联动影响**：无（Shadowrocket 广告拦截保留未删）。
+- **可迁移经验**：`[Cue: OpenClash 与 MerlinClash 多路由共用同一套 Mihomo 规则与 DNS 策略] -> [Lesson: 两类插件底层均为 Mihomo Meta v1.19+，仅需按各路由 WAN 口替换 nameserver 的上游网关 DNS，其余 respect-rules、nameserver-policy、217 条 fake-ip-filter、sniffer 与 QUIC 拦截可完全统一]`
