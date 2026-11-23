@@ -4,24 +4,6 @@
 // 备用方案：默认的 YAML 覆写 overwrite/Clash_Mi_Merge.yaml 已带完整 rules（前置规则在最前），一般不需要本 JS。
 // 语义：与 YAML 覆写一致（字典深合并，列表/标量整体替换），另把 LC_PREPEND_RULES 插到 rules 最前。
 var LC_PATCH = {
-  "rule-providers": {
-    "lc-adblock-domain": {
-      "type": "http",
-      "behavior": "domain",
-      "format": "yaml",
-      "url": "https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/adblock/AdBlock_Domain.yaml",
-      "path": "./ruleset/lc_adblock_domain.yaml",
-      "interval": 86400
-    },
-    "lc-adblock-ip": {
-      "type": "http",
-      "behavior": "ipcidr",
-      "format": "yaml",
-      "url": "https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/adblock/AdBlock_IP.yaml",
-      "path": "./ruleset/lc_adblock_ip.yaml",
-      "interval": 86400
-    }
-  },
   "ipv6": false,
   "find-process-mode": "always",
   "external-ui-url": "",
@@ -35,25 +17,27 @@ var LC_PATCH = {
     "ipv6-timeout": 300,
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
+    "fake-ip-filter-mode": "blacklist",
     "cache-algorithm": "arc",
     "default-nameserver": [
+      "114.114.114.114",
+      "119.29.29.29",
+      "223.5.5.5"
+    ],
+    "nameserver": [
       "223.5.5.5",
       "119.29.29.29"
     ],
-    "nameserver": [
-      "https://223.5.5.5/dns-query",
-      "https://1.12.12.12/dns-query"
-    ],
     "fallback": [],
-    "respect-rules": false,
+    "respect-rules": true,
     "nameserver-policy": {
       "geosite:cn": [
-        "https://223.5.5.5/dns-query",
-        "https://1.12.12.12/dns-query"
+        "223.5.5.5",
+        "119.29.29.29"
       ],
       "geosite:geolocation-!cn": [
-        "https://223.5.5.5/dns-query",
-        "https://1.12.12.12/dns-query"
+        "https://1.1.1.1/dns-query",
+        "https://dns.google/dns-query"
       ]
     },
     "proxy-server-nameserver": [
@@ -110,9 +94,21 @@ var LC_PATCH = {
       "time.*.edu.cn",
       "time.*.apple.com",
       "time-ios.apple.com",
-      "time[1-7].*.com",
+      "time1.*.com",
+      "time2.*.com",
+      "time3.*.com",
+      "time4.*.com",
+      "time5.*.com",
+      "time6.*.com",
+      "time7.*.com",
       "ntp.*.com",
-      "ntp[1-7].*.com",
+      "ntp1.*.com",
+      "ntp2.*.com",
+      "ntp3.*.com",
+      "ntp4.*.com",
+      "ntp5.*.com",
+      "ntp6.*.com",
+      "ntp7.*.com",
       "+.time.edu.cn",
       "+.ntp.org.cn",
       "+.pool.ntp.org",
@@ -226,7 +222,46 @@ var LC_PATCH = {
       "network-test.debian.org",
       "detectportal.firefox.com",
       "geosite:category-games",
-      "geosite:apple-cn"
+      "geosite:apple-cn",
+      "+.localhost",
+      "cable.auth.com",
+      "resolver1.opendns.com",
+      "global.turn.twilio.com",
+      "global.stun.twilio.com",
+      "app.yinxiang.com",
+      "injections.adguard.org",
+      "shark007.net",
+      "+.n.n.srv.nintendo.net",
+      "+.nintendowifi.net",
+      "*.*.xboxlive.com",
+      "+.stun.*.*.*",
+      "+.stun.*.*.*.*",
+      "+.stun.*.*.*.*.*",
+      "+.router.asus.com",
+      "heartbeat.belkin.com",
+      "+.mcdn.bilivideo.cn",
+      "+.bilibili.com",
+      "+.bilicdn.com",
+      "+.bilivideo.com",
+      "mdn.open.wo.cn",
+      "enrichgw.10010.com",
+      "+.icitymobile.mobi",
+      "+.10099.com.cn",
+      "+.microdone.cn",
+      "+.hacs.xyz",
+      "+.home-assistant.io",
+      "+.met.no",
+      "+.unionpay.net",
+      "+.unionpayintl.cn",
+      "+.chinaunionpay.com.cn",
+      "+.chinaunionpay.net",
+      "+.cup62.cn",
+      "+.chinaums.com",
+      "+.chinapay.com",
+      "+.chinapay.cn",
+      "+.airepay.net",
+      "+.chinapayhongkong.com",
+      "+.argotunnel.com"
     ]
   },
   "tun": {
@@ -258,7 +293,9 @@ var LC_PATCH = {
       "+.applepay.com",
       "+.applewallet.com",
       "+.unionpay.com",
-      "+.95516.com"
+      "+.95516.com",
+      "+.oray.com",
+      "+.sunlogin.net"
     ],
     "sniff": {
       "TLS": {
@@ -305,6 +342,9 @@ var LC_PREPEND_RULES = [
   "DOMAIN-SUFFIX,anydesk.com.cn,DIRECT",
   "DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT",
   "DOMAIN,homebistro.bigrich.cc,DIRECT",
+  "DOMAIN-SUFFIX,argotunnel.com,DIRECT",
+  "IP-CIDR,198.41.192.0/24,DIRECT,no-resolve",
+  "IP-CIDR,198.41.200.0/24,DIRECT,no-resolve",
   "DOMAIN,c.ha.zdz.plus,DIRECT",
   "DOMAIN-SUFFIX,drleao.cn,🚀 手动选择",
   "DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择",
@@ -342,9 +382,7 @@ var LC_PREPEND_RULES = [
   "DOMAIN-SUFFIX,cup62.cn,DIRECT",
   "DOMAIN-SUFFIX,cloudpay.com.cn,DIRECT",
   "DOMAIN-SUFFIX,airepay.net,DIRECT",
-  "DOMAIN-SUFFIX,chinapayhongkong.com,DIRECT",
-  "RULE-SET,lc-adblock-domain,REJECT",
-  "RULE-SET,lc-adblock-ip,REJECT,no-resolve"
+  "DOMAIN-SUFFIX,chinapayhongkong.com,DIRECT"
 ];
 
 function lcIsMap(v) {

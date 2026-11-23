@@ -105,6 +105,7 @@ ops:
       ruleset=📁 文件传输,[]DOMAIN-SUFFIX,docs.google.com
       ruleset=📁 文件传输,[]DOMAIN-KEYWORD,googledrive
       ;自定义加入规则
+      ruleset=🎯 全球直连,[]DOMAIN,homebistro.bigrich.cc
       ruleset=🚀 手动选择,[]DOMAIN-SUFFIX,bigrich.cc
       ; Synology / QuickConnect：上游 Custom_Direct 用 DOMAIN,*synology* 是精确匹配，不会命中真实主机名
       ruleset=🎯 全球直连,[]DOMAIN-SUFFIX,synology.com

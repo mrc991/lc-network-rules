@@ -3,22 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1488 条，前置：62 条，合计：1550 条
-rule-providers:
-  lc-adblock-domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/adblock/AdBlock_Domain.yaml
-    path: ./ruleset/lc_adblock_domain.yaml
-    interval: 86400
-  lc-adblock-ip:
-    type: http
-    behavior: ipcidr
-    format: yaml
-    url: https://testingcf.jsdelivr.net/gh/mrc991/lc-network-rules@main/overwrite/adblock/AdBlock_IP.yaml
-    path: ./ruleset/lc_adblock_ip.yaml
-    interval: 86400
+# 订阅：1488 条，前置：63 条，合计：1551 条
 ipv6: false
 find-process-mode: always
 external-ui-url: ''
@@ -32,22 +17,24 @@ dns:
   ipv6-timeout: 300
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: blacklist
   cache-algorithm: arc
   default-nameserver:
+  - 114.114.114.114
+  - 119.29.29.29
+  - 223.5.5.5
+  nameserver:
   - 223.5.5.5
   - 119.29.29.29
-  nameserver:
-  - https://223.5.5.5/dns-query
-  - https://1.12.12.12/dns-query
   fallback: []
-  respect-rules: false
+  respect-rules: true
   nameserver-policy:
     geosite:cn:
-    - https://223.5.5.5/dns-query
-    - https://1.12.12.12/dns-query
+    - 223.5.5.5
+    - 119.29.29.29
     geosite:geolocation-!cn:
-    - https://223.5.5.5/dns-query
-    - https://1.12.12.12/dns-query
+    - https://1.1.1.1/dns-query
+    - https://dns.google/dns-query
   proxy-server-nameserver:
   - 223.5.5.5
   - 119.29.29.29
@@ -101,9 +88,21 @@ dns:
   - time.*.edu.cn
   - time.*.apple.com
   - time-ios.apple.com
-  - time[1-7].*.com
+  - time1.*.com
+  - time2.*.com
+  - time3.*.com
+  - time4.*.com
+  - time5.*.com
+  - time6.*.com
+  - time7.*.com
   - ntp.*.com
-  - ntp[1-7].*.com
+  - ntp1.*.com
+  - ntp2.*.com
+  - ntp3.*.com
+  - ntp4.*.com
+  - ntp5.*.com
+  - ntp6.*.com
+  - ntp7.*.com
   - +.time.edu.cn
   - +.ntp.org.cn
   - +.pool.ntp.org
@@ -218,6 +217,45 @@ dns:
   - detectportal.firefox.com
   - geosite:category-games
   - geosite:apple-cn
+  - +.localhost
+  - cable.auth.com
+  - resolver1.opendns.com
+  - global.turn.twilio.com
+  - global.stun.twilio.com
+  - app.yinxiang.com
+  - injections.adguard.org
+  - shark007.net
+  - +.n.n.srv.nintendo.net
+  - +.nintendowifi.net
+  - '*.*.xboxlive.com'
+  - +.stun.*.*.*
+  - +.stun.*.*.*.*
+  - +.stun.*.*.*.*.*
+  - +.router.asus.com
+  - heartbeat.belkin.com
+  - +.mcdn.bilivideo.cn
+  - +.bilibili.com
+  - +.bilicdn.com
+  - +.bilivideo.com
+  - mdn.open.wo.cn
+  - enrichgw.10010.com
+  - +.icitymobile.mobi
+  - +.10099.com.cn
+  - +.microdone.cn
+  - +.hacs.xyz
+  - +.home-assistant.io
+  - +.met.no
+  - +.unionpay.net
+  - +.unionpayintl.cn
+  - +.chinaunionpay.com.cn
+  - +.chinaunionpay.net
+  - +.cup62.cn
+  - +.chinaums.com
+  - +.chinapay.com
+  - +.chinapay.cn
+  - +.airepay.net
+  - +.chinapayhongkong.com
+  - +.argotunnel.com
 tun:
   enable: true
   stack: system
@@ -245,6 +283,8 @@ sniffer:
   - +.applewallet.com
   - +.unionpay.com
   - +.95516.com
+  - +.oray.com
+  - +.sunlogin.net
   sniff:
     TLS:
       ports:
@@ -281,6 +321,9 @@ rules:
 - DOMAIN-SUFFIX,anydesk.com.cn,DIRECT
 - DOMAIN-SUFFIX,net.anydesk.com.cn,DIRECT
 - DOMAIN,homebistro.bigrich.cc,DIRECT
+- DOMAIN-SUFFIX,argotunnel.com,DIRECT
+- IP-CIDR,198.41.192.0/24,DIRECT,no-resolve
+- IP-CIDR,198.41.200.0/24,DIRECT,no-resolve
 - DOMAIN,c.ha.zdz.plus,DIRECT
 - DOMAIN-SUFFIX,drleao.cn,🚀 手动选择
 - DOMAIN-SUFFIX,hzjvlo.cn,🚀 手动选择
@@ -319,8 +362,6 @@ rules:
 - DOMAIN-SUFFIX,cloudpay.com.cn,DIRECT
 - DOMAIN-SUFFIX,airepay.net,DIRECT
 - DOMAIN-SUFFIX,chinapayhongkong.com,DIRECT
-- RULE-SET,lc-adblock-domain,REJECT
-- RULE-SET,lc-adblock-ip,REJECT,no-resolve
 - GEOSITE,private,🎯 全球直连
 - GEOIP,private,🎯 全球直连,no-resolve
 - DOMAIN-SUFFIX,tailscale.com,🀄️ 优选地址
