@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1488 条，前置：63 条，合计：1551 条
+# 订阅：1489 条，前置：63 条，合计：1552 条
 ipv6: false
 find-process-mode: always
 external-ui-url: ''
@@ -1781,6 +1781,7 @@ rules:
 - DOMAIN-SUFFIX,googledrive.com,📁 文件传输
 - DOMAIN-SUFFIX,docs.google.com,📁 文件传输
 - DOMAIN-KEYWORD,googledrive,📁 文件传输
+- DOMAIN,homebistro.bigrich.cc,🎯 全球直连
 - DOMAIN-SUFFIX,bigrich.cc,🚀 手动选择
 - DOMAIN-SUFFIX,synology.com,🎯 全球直连
 - DOMAIN-SUFFIX,synology.cn,🎯 全球直连
