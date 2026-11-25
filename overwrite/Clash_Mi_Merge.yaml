@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1493 条，前置：63 条，合计：1556 条
+# 订阅：1496 条，前置：63 条，合计：1559 条
 ipv6: false
 find-process-mode: always
 external-ui-url: ''
@@ -544,6 +544,7 @@ rules:
 - DOMAIN-SUFFIX,ax1x.com,🎯 全球直连
 - DOMAIN-SUFFIX,axuex.top,🎯 全球直连
 - DOMAIN-SUFFIX,azpromotion.com,🎯 全球直连
+- DOMAIN-SUFFIX,azurpromilia.com,🎯 全球直连
 - DOMAIN-SUFFIX,b7f3192.com,🎯 全球直连
 - DOMAIN-SUFFIX,ba-hospital.com,🎯 全球直连
 - DOMAIN-SUFFIX,babawar.com,🎯 全球直连
@@ -1587,6 +1588,7 @@ rules:
 - DOMAIN-SUFFIX,xzsckj.com,🎯 全球直连
 - DOMAIN-SUFFIX,xzzhtc.com,🎯 全球直连
 - DOMAIN-SUFFIX,yayi360.com,🎯 全球直连
+- DOMAIN-SUFFIX,ychpt.com,🎯 全球直连
 - DOMAIN-SUFFIX,ycjintou.com,🎯 全球直连
 - DOMAIN-SUFFIX,ycoo.net,🎯 全球直连
 - DOMAIN-SUFFIX,ycyct.com,🎯 全球直连
@@ -1617,6 +1619,7 @@ rules:
 - DOMAIN-SUFFIX,youqian.pro,🎯 全球直连
 - DOMAIN-SUFFIX,youzhiyouxing.com,🎯 全球直连
 - DOMAIN-SUFFIX,yrqvlchq5.com,🎯 全球直连
+- DOMAIN-SUFFIX,ysdps.com,🎯 全球直连
 - DOMAIN-SUFFIX,yshoufa.com,🎯 全球直连
 - DOMAIN-SUFFIX,yuanqidesk3.com,🎯 全球直连
 - DOMAIN-SUFFIX,yueti.vip,🎯 全球直连
