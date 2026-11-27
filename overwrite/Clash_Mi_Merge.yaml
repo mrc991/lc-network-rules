@@ -3,7 +3,7 @@
 # rules = 源文件 prepend-rules + 同一模板 clash/Custom_Clash.ini 经 subconverter 展开的完整订阅规则。
 # Clash Mi 的 YAML 覆写对列表整体替换，所以这里的 rules 会替换订阅 rules，等效于把 prepend-rules 放到最前。
 # 注意：find-process-mode 会被 Clash Mi「核心设置 → 进程匹配模式」再覆盖，每台机器需在 App 里设为 always。
-# 订阅：1497 条，前置：63 条，合计：1560 条
+# 订阅：1503 条，前置：63 条，合计：1566 条
 ipv6: false
 find-process-mode: always
 external-ui-url: ''
@@ -674,6 +674,7 @@ rules:
 - DOMAIN-SUFFIX,darwinchow.com,🎯 全球直连
 - DOMAIN-SUFFIX,day.app,🎯 全球直连
 - DOMAIN-SUFFIX,dayilive.com,🎯 全球直连
+- DOMAIN-SUFFIX,dccztux.com,🎯 全球直连
 - DOMAIN-SUFFIX,dcgstd.com,🎯 全球直连
 - DOMAIN-SUFFIX,dcshfu.com,🎯 全球直连
 - DOMAIN-SUFFIX,dd3862.com,🎯 全球直连
@@ -851,6 +852,7 @@ rules:
 - DOMAIN-SUFFIX,guangyapan.com,🎯 全球直连
 - DOMAIN-SUFFIX,guazi.fun,🎯 全球直连
 - DOMAIN-SUFFIX,guiguiya.com,🎯 全球直连
+- DOMAIN-SUFFIX,gulufenfa.com,🎯 全球直连
 - DOMAIN-SUFFIX,guyuns.asia,🎯 全球直连
 - DOMAIN-SUFFIX,gvgoo.com,🎯 全球直连
 - DOMAIN-SUFFIX,gwmapp-w.com,🎯 全球直连
@@ -943,6 +945,7 @@ rules:
 - DOMAIN-SUFFIX,hzyi.eu.org,🎯 全球直连
 - DOMAIN-SUFFIX,i6z7t5.com,🎯 全球直连
 - DOMAIN-SUFFIX,i955jr0pk.com,🎯 全球直连
+- DOMAIN-SUFFIX,iadlioo.com,🎯 全球直连
 - DOMAIN-SUFFIX,ibnjl.shop,🎯 全球直连
 - DOMAIN-SUFFIX,ibwm5lynb6.com,🎯 全球直连
 - DOMAIN-SUFFIX,ichongjiayuan.com,🎯 全球直连
@@ -1248,6 +1251,7 @@ rules:
 - DOMAIN-SUFFIX,ppqrrs.com,🎯 全球直连
 - DOMAIN-SUFFIX,ppt28.com,🎯 全球直连
 - DOMAIN-SUFFIX,privateapi.xyz,🎯 全球直连
+- DOMAIN-SUFFIX,proqianwen.com,🎯 全球直连
 - DOMAIN-SUFFIX,psf0404.shop,🎯 全球直连
 - DOMAIN-SUFFIX,pthqzpc100.com,🎯 全球直连
 - DOMAIN-SUFFIX,ptlgs.org,🎯 全球直连
@@ -1463,6 +1467,7 @@ rules:
 - DOMAIN-SUFFIX,ugnas.cloud,🎯 全球直连
 - DOMAIN-SUFFIX,ulife.group,🎯 全球直连
 - DOMAIN-SUFFIX,uploadlog.com,🎯 全球直连
+- DOMAIN-SUFFIX,upoem1.com,🎯 全球直连
 - DOMAIN-SUFFIX,us.ci,🎯 全球直连
 - DOMAIN-SUFFIX,v-koolsh.com,🎯 全球直连
 - DOMAIN-SUFFIX,vanjee.net,🎯 全球直连
@@ -1596,6 +1601,7 @@ rules:
 - DOMAIN-SUFFIX,ydxian.xyz,🎯 全球直连
 - DOMAIN-SUFFIX,yeguodj.com,🎯 全球直连
 - DOMAIN-SUFFIX,ygdj17.com,🎯 全球直连
+- DOMAIN-SUFFIX,yh29798.com,🎯 全球直连
 - DOMAIN-SUFFIX,yhxjkj.top,🎯 全球直连
 - DOMAIN-SUFFIX,yi-ll.com,🎯 全球直连
 - DOMAIN-SUFFIX,yibanbianji.com,🎯 全球直连
